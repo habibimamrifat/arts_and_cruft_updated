@@ -17,12 +17,20 @@ import { LoadDataFromDb } from './components/CustomeLoader/LoadDataFromDb';
 import ConfirmPerchese from './components/ConfirmPerchese/confirmperchese';
 import History from './components/History/History';
 import Payment from './components/Payment/Payment';
+import LoginPage from './components/Login/LoginPage';
+import AuthProvider from './components/provider/AuthProvider';
+import PrivateRoute from './components/routes/PrivateRoute';
+import Profile from './components/Profile/Profile';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home></Home>,
     children:[
+      {
+        path:'/',
+        element:<LoginPage></LoginPage>
+      },
       {
         path:'/aboutus',
         element:<Aboutus></Aboutus>
@@ -54,8 +62,12 @@ const router = createBrowserRouter([
       },
       {
         path:'/Payment',
-        element:<Payment></Payment>
+        element:<PrivateRoute><Payment></Payment></PrivateRoute>
         
+      },
+      {
+        path:'/profile',
+        element:<Profile></Profile>
       }
       
     ]
@@ -64,6 +76,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
+    <AuthProvider>
     <RouterProvider router={router} />
+    </AuthProvider>
   </React.StrictMode>,
 )
