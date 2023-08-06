@@ -6,17 +6,6 @@ import { AuthContext } from '../provider/AuthProvider';
 
 const Navbar = () => {
 
-    const {user, logOutUser}= useContext(AuthContext);
-    const handleLogOut =()=>
-    {
-        logOutUser ()
-        .then(result =>{
-            console.log('logged out');
-        })
-        .catch(error=>{
-            console.log(error);
-        })
-    }
 
 
     return (
@@ -44,10 +33,6 @@ const Navbar = () => {
                 <div className="normal-case text-xl flex">
                 <PaintBrushIcon className="h-6 w-6 text-blue-500 mx-2" />
                     <p>Arts & Craft</p>
-
-                    { user &&
-                        <p className='text-white px-5'>{user.email} <button onClick={handleLogOut} >Log Out</button></p>
-                    }
                     
                 </div>
             </div>

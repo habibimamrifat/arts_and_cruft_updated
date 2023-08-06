@@ -64,14 +64,16 @@ const router = createBrowserRouter([
         path:'/Payment',
         element:<PrivateRoute><Payment></Payment></PrivateRoute>
         
-      },
-      {
-        path:'/profile',
-        element:<Profile></Profile>
       }
       
     ]
   },
+  {
+    path:'/profile',
+    element:<PrivateRoute><Profile></Profile></PrivateRoute>
+  
+  }
+
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

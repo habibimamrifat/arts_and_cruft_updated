@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
 import app from './../../Firebase/firebase.init';
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
 
 
 export const AuthContext = createContext(null);
@@ -10,11 +11,14 @@ const auth = getAuth(app)
 
 const AuthProvider = ({children}) => {
 
+    
+
     const [user, setUser] = useState(null);
     const [loading,setLoading] = useState(true)
 
     const signUpUsers =(email,password)=>{
         setLoading(true)
+
        return createUserWithEmailAndPassword(auth, email, password)
     }
 
@@ -22,9 +26,24 @@ const AuthProvider = ({children}) => {
         setLoading(true)
         return signInWithEmailAndPassword(auth, email, password)
     }
+
+    const handleResetPassword = (email)=>
+    {
+        return sendPasswordResetEmail(auth, email);
+    }
+
+    function popupGoogleSignIn()
+    {
+        const provider = new GoogleAuthProvider();
+        return signInWithPopup(auth, provider);
+
+    }
+
     const logOutUser =()=>
     {
+        
         return signOut(auth)
+        
     }
 
     //set observer on the user
@@ -44,7 +63,9 @@ const AuthProvider = ({children}) => {
         loading,
         signUpUsers,
         logInUsers,
-        logOutUser
+        logOutUser,
+        popupGoogleSignIn,
+        handleResetPassword
     }
 
     return (

@@ -1,10 +1,12 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
+import { sendEmailVerification } from "firebase/auth";
 
 const StudentSignUp = () => {
   const [signUpType, setSignUpType] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const { signUpUsers } = useContext(AuthContext);
 
@@ -29,10 +31,24 @@ const StudentSignUp = () => {
 
     signUpUsers(email, password)
     .then(result =>{
-      console.log(result.user);
+      const signedUpUser = result.user;
+
+      sendEmailVerification(signedUpUser)
+      .then(result =>{
+        console.log(result)
+        form.reset()
+        
+        navigate('/')
+      })
+      .catch(error=>{
+        setError(error)
+      })
+
+
     })
+    
     .catch(error=>{
-      console.log(error);
+      setError(error);
     })
 
 
