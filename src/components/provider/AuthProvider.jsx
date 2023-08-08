@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
 import app from './../../Firebase/firebase.init';
 import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
+
 
 
 export const AuthContext = createContext(null);
@@ -12,6 +12,9 @@ const auth = getAuth(app)
 const AuthProvider = ({children}) => {
 
     
+    const [userDetail, setUserDetail]=useState({Name:'', MobileNo:'', Address:'',Institution:'', City:'', PaymentNumber:'', Hobby:'',PaymentMethod:'', Email:''})
+    
+    const [productDetail, setProductDetail]=useState({productImg:'',productPrice:'',productName:'',aboutProduct:'',quantity:'',category:''})
 
     const [user, setUser] = useState(null);
     const [loading,setLoading] = useState(true)
@@ -30,6 +33,12 @@ const AuthProvider = ({children}) => {
     const handleResetPassword = (email)=>
     {
         return sendPasswordResetEmail(auth, email);
+    }
+
+    function changePasswordFromSettings(password)
+    {
+        console.log(' changePasswordFromSettings');
+        console.log(password);
     }
 
     function popupGoogleSignIn()
@@ -61,11 +70,16 @@ const AuthProvider = ({children}) => {
     const authInfo={
         user,
         loading,
+        userDetail,
+        setUserDetail,
+        productDetail,
+        setProductDetail,
         signUpUsers,
         logInUsers,
         logOutUser,
         popupGoogleSignIn,
-        handleResetPassword
+        handleResetPassword,
+        changePasswordFromSettings
     }
 
     return (

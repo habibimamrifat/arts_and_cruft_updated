@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUserPen,
@@ -6,44 +6,69 @@ import {
   faGear,
   faMessage,
 } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../provider/AuthProvider";
 
 const ProfileLeftSide = () => {
 
-    const [paymentMathord,setPaymentMathord]= useState('');
-    console.log(paymentMathord);
+  const {productDetail,setProductDetail,} =useContext(AuthContext);
+  
+  const [openPopup, setOpenPopup] = useState(false);
+  let category;
 
-    const userAdditionalData=(event =>{
-       
-        console.log('i eat rice');
+  function gatherProductDetail (event)
+  {
+    let name = event.target.name;
+    let value = event.target.value;
+    setProductDetail({...productDetail , [name] : value})
+  }
 
-    })
+  function openPopUpForPost() {
+    console.log("going to open popup");
+    setOpenPopup(true);
+  }
+  function closePopUpForPost() {
+    console.log("going to close popup");
+    setOpenPopup(false);
+  }
+  function createAPostAndSell()
+  {
+    console.log('create a post and sell')
+    closePopUpForPost();
+    console.log(productDetail);
+  }
 
-
-
-
+  function createAPost() {
+    console.log("i am posting");
+    closePopUpForPost();
+    console.log(productDetail);
+  }
 
   return (
     <div>
+
       <li className="list-none p-5 m-2 bg-slate-800 rounded-2xl hover:border-2 to-blue-700 text-center">
-        <button onClick={() => window.my_modal_4.showModal()}>
-          {" "}
-          <FontAwesomeIcon icon={faUserPen} className="p-1 mr-1" />
-          <span className="hidden md:inline">Edit Profile</span>
-        </button>
+        <Link to="profile/updateprofiledata">
+          <button>
+            <FontAwesomeIcon icon={faUserPen} className="p-1 mr-1" />
+            <span className="hidden md:inline">Edit Profile</span>
+          </button>
+        </Link>
       </li>
 
       <li className="list-none p-5 m-2 bg-slate-800 rounded-2xl hover:border-2 to-blue-700 text-center">
-        <button>
-          {" "}
+        <button onClick={openPopUpForPost}>
           <FontAwesomeIcon icon={faFilePen} className="p-1 mr-1" />
           <span className="hidden md:inline">Create A Post</span>{" "}
         </button>
       </li>
+
       <li className="list-none p-5 m-2 bg-slate-800 rounded-2xl hover:border-2 to-blue-700 text-center">
         <button>
-          {" "}
+          <Link  to="profile/settings">
           <FontAwesomeIcon icon={faGear} className="p-1 mr-1" />{" "}
           <span className="hidden md:inline">Settings</span>
+          </Link>
         </button>
       </li>
 
@@ -54,92 +79,54 @@ const ProfileLeftSide = () => {
           <span className="hidden md:inline">Message</span>
         </button>
       </li>
+{/* -------------------------------popUpSection----------------------------------  */}
+      <div>
+        {openPopup && (
+          <div className="fixed flex top-[15%] h-3/4 items-center justify-center sm:w-2/5 md:w-1/4 bg-slate-100 rounded-3xl text-center mx-[24%] sm:mx[10%] md:mx-[37%]">
+            <div className=" flex flex-col justify-center items-center m-3">
+              
+                <input name="productImg" className="w-[100%] border-2 h-40 border-slate-800 rounded-lg" type="file" />
 
-      {/* --------------------MODAL-1------------------------  */}
+              <div className="mt-2 flex flex-col gap-1">
 
-      <dialog id="my_modal_4" className="modal">
-        
-        <form onSubmit={userAdditionalData} className="modal-box w-11/12 min-w-5xl flex flex-col justify-center items-center mt-5"
-        >
-            
-            
-          <div className="mt-5">
-            <input
-              className="input input-bordered input-primary w-full max-w-xs m-2 mt-10"
-              type="text"
-              name="name"
-              placeholder="Name:"
-            />
-          </div>
-          <div>
-            <input
-              className="input input-bordered input-primary w-full max-w-xs m-2"
-              type="tel"
-              name="mobileNo"
-              placeholder="Mobile Number:"
-            />
-          </div>
-          <div>
-            <input
-              className="input input-bordered input-primary w-full max-w-xs m-2"
-              type="text"
-              name="address"
-              placeholder="Address:"
-            />
-          </div>
-          <div>
-            <input
-              className="input input-bordered input-primary w-full max-w-xs m-2"
-              type="text"
-              name="institution"
-              placeholder="Institution:"
-            />
-          </div>
-          <div>
-            <input
-              className="input input-bordered input-primary w-full max-w-xs m-2"
-              type="text"
-              name="city"
-              placeholder="City:"
-            />
-          </div>
-          <div>
-            <input
-              className="input input-bordered input-primary w-full max-w-xs m-2"
-              type="text"
-              name="hobby"
-              placeholder="Hobby:"
-            />
-          </div>
+                <input onChange={gatherProductDetail} name="productPrice" type="text" placeholder="Product Price" className="input input-bordered " />
 
-          <div className="flex justify-center items-center">
+                <input onChange={gatherProductDetail} name="productName" type="text" placeholder="Product Name" className="input input-bordered input-primary w-full max-w-xs" />
 
-          <select value={paymentMathord} onChange={e=>setPaymentMathord(e.target.value)} className="select select-primary w-full max-w-xs">
-            <option disabled selected>
-              What is the best TV show?
-            </option>
-            <option>Bkash</option>
-            <option>Nagad</option>
-            <option>Rocket</option>
-            
-          </select>
+                <input onChange={gatherProductDetail} name="aboutProduct" type="text" placeholder="About Product" className="input input-bordered input-primary w-full max-w-xs" />
 
-          <input
-              className="input input-bordered input-primary w-full max-w-xs m-2"
-              type="text"
-              name="paymentNumber"
-              placeholder="Number:"
-            />
+                <input onChange={gatherProductDetail} name="quantity" type="text" placeholder="Aveable Quantity" className="input input-bordered input-primary w-full max-w-xs" />
 
+
+                <select
+                  value={category}
+              
+                  onChange={gatherProductDetail}
+                  className="select select-primary w-full max-w-xs hover:border-2 hover:border-blue-500"
+                  name="category"
+                  required
+                >
+                  <option value="default" >Category</option>
+                  <option>Art</option>
+                  <option>craft</option>
+                </select>
+              </div>
+
+              <div className="flex justify-center gap-1 mt-2 ">
+                <button onClick={createAPost} className="btn">
+                  Post
+                </button>
+                <button onClick={createAPostAndSell} className="btn">
+                  Post & Sell
+                </button>
+                <button onClick={closePopUpForPost} className="btn">
+                  Close
+                </button>
+              </div>
+            </div>
           </div>
-
-          <div className="modal-action">
-          <button type="submit" className="btn">Submit</button>
-            <button className="btn">Close</button>
-          </div>
-        </form>
-      </dialog>
-      {/* ...........................MODAL-1 ENDS---------------------------  */}
+        )}
+      </div>
     </div>
   );
 };

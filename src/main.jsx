@@ -21,6 +21,9 @@ import LoginPage from './components/Login/LoginPage';
 import AuthProvider from './components/provider/AuthProvider';
 import PrivateRoute from './components/routes/PrivateRoute';
 import Profile from './components/Profile/Profile';
+import UpdateProfileData from './components/ProfileBody/UpdateProfileData';
+import ProfileBody from './components/ProfileBody/ProfileBody';
+import Settings from './components/ProfileBody/Settings';
 
 const router = createBrowserRouter([
   {
@@ -63,17 +66,31 @@ const router = createBrowserRouter([
       {
         path:'/Payment',
         element:<PrivateRoute><Payment></Payment></PrivateRoute>
-        
+
       }
       
     ]
   },
   {
     path:'/profile',
-    element:<PrivateRoute><Profile></Profile></PrivateRoute>
-  
+    element:<PrivateRoute><Profile></Profile></PrivateRoute>,
+    children:[
+      {
+        path:'/profile',
+        element:<ProfileBody></ProfileBody>
+      },
+      {
+        path:'profile/updateprofiledata',
+        element:<UpdateProfileData></UpdateProfileData>
+      },
+      {
+        path:'profile/settings',
+        element:<Settings></Settings>
+      } 
+    ]
+    
   }
-
+ 
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

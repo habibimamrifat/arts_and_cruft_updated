@@ -15,6 +15,7 @@ const ProfileBody = () => {
       <div className="h-96 border-2 border-blue-500 col-span-3 sticky top-[30%] md:top-[35%]">
         <ProfileRightSide></ProfileRightSide>
       </div>
+     
     </div>
   );
 };
