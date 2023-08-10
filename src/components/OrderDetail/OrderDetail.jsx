@@ -10,6 +10,7 @@ const OrderDetail = () => {
 
     const addedInCart = useLoaderData();
     console.log(addedInCart);
+    
     const [newCart, setNewCart]= useState(addedInCart);
 
     const addMoreToCart = (id) =>{
@@ -40,6 +41,10 @@ const OrderDetail = () => {
             console.log(UnChangedItem);
             reduce_from_db(id);
             setNewCart(UnChangedItem);
+            if(addMore.quantity ==0)
+            {
+                deleteFormCart(id);
+            }
         }
         
     }

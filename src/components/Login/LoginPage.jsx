@@ -9,7 +9,7 @@ const LoginPage = () => {
   const [signInType, setSignInType] = useState("");
   const [error,setError] = useState('');
 
-  const { logInUsers, handleResetPassword, popupGoogleSignIn } = useContext(AuthContext);
+  const { logInUsers, handleResetPassword, popupGoogleSignIn,setUser } = useContext(AuthContext);
   const nevigate = useNavigate();
 
   const location = useLocation();
@@ -35,6 +35,8 @@ const LoginPage = () => {
     logInUsers(email, password)
       .then((result) => {
         const loggedUser = result.user;
+      
+        setUser(loggedUser);
         
         form.reset();
         // will be changed with profileLink
@@ -91,7 +93,7 @@ const LoginPage = () => {
         <div className="flex flex-col justify-center items-center">
           {(rendaring && <h1 className="text-4xl mb-5">Log In</h1>) || (
             <h1 className="text-4xl mb-5">
-              log in with your Account <br /> Fillup form{" "}
+              log in with your Account <br />or<br/> Fillup <span><Link to="customerform"><small>Customerform</small></Link></span>{" "}
             </h1>
           )}
 

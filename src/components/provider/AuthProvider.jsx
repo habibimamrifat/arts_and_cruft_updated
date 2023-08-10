@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import app from './../../Firebase/firebase.init';
-import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut, updatePassword } from "firebase/auth";
 
 
 
@@ -15,6 +15,12 @@ const AuthProvider = ({children}) => {
     const [userDetail, setUserDetail]=useState({Name:'', MobileNo:'', Address:'',Institution:'', City:'', PaymentNumber:'', Hobby:'',PaymentMethod:'', Email:''})
     
     const [productDetail, setProductDetail]=useState({productImg:'',productPrice:'',productName:'',aboutProduct:'',quantity:'',category:''})
+
+    const [customer, setCustomer]=useState({customerName:'', customerMobileNumber:'',customerAddress:'',GrandTotal:'',customerCart:[]})
+
+    const [customerPermission , setCustomerPermission] =useState(false);
+    const [finalCart,setFinalCart]= useState([])
+    const [finalGrandTotal,setFinalGrandTotal]= useState(0);
 
     const [user, setUser] = useState(null);
     const [loading,setLoading] = useState(true)
@@ -35,10 +41,12 @@ const AuthProvider = ({children}) => {
         return sendPasswordResetEmail(auth, email);
     }
 
-    function changePasswordFromSettings(password)
+    function changePasswordFromSettings(newPassword)
     {
-        console.log(' changePasswordFromSettings');
-        console.log(password);
+       console.log(auth.currentUser);
+       console.log(user);
+       return updatePassword(user,newPassword)
+   
     }
 
     function popupGoogleSignIn()
@@ -69,11 +77,20 @@ const AuthProvider = ({children}) => {
 
     const authInfo={
         user,
+        setUser,
         loading,
         userDetail,
         setUserDetail,
         productDetail,
         setProductDetail,
+        customer,
+        customerPermission,
+        finalCart,
+        setFinalCart,
+        finalGrandTotal,
+        setFinalGrandTotal,
+        setCustomerPermission,
+        setCustomer,
         signUpUsers,
         logInUsers,
         logOutUser,
