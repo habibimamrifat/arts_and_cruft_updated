@@ -19,10 +19,10 @@ const CustomerForm = () => {
     {
         event.preventDefault();
         console.log(customer);
-        if(customer.customerName && customer.customerMobileNumber
-            && customer.customerAddress )
+        if(customer.customerName !=='' && customer.customerMobileNumber !==''
+            && customer.customerAddress !=='' )
         {
-            setCustomerPermission(true)
+            // setCustomerPermission(true)
         }
         
         navigate('/Payment')
