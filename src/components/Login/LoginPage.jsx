@@ -6,7 +6,7 @@ import { AuthContext } from "../provider/AuthProvider";
 
 const LoginPage = () => {
 
-  const [signInType, setSignInType] = useState("");
+  
   const [error,setError] = useState('');
 
   const { logInUsers, handleResetPassword, popupGoogleSignIn,setUser } = useContext(AuthContext);
@@ -35,9 +35,9 @@ const LoginPage = () => {
     logInUsers(email, password)
       .then((result) => {
         const loggedUser = result.user;
-      
+        const loggerUserUid = loggedUser.uid;
         setUser(loggedUser);
-        
+      
         form.reset();
         // will be changed with profileLink
         nevigate(from);
@@ -46,13 +46,7 @@ const LoginPage = () => {
         setError(error);
       });
 
-    if (signInType === "student") {
-      // console.log('student');
-      //save into student database and call student profile
-    } else if (signInType === "vendor") {
-      // console.log('vendor');
-      //save into student database and call vendor profile
-    }
+   
   };
 
   function handlePassword(event) {
@@ -120,16 +114,9 @@ const LoginPage = () => {
 
         <div className="flex justify-center items-center mt-5">
           <button
-            onClick={() => setSignInType("student")}
             className="btn mx-5 px-5 rounded-lg"
           >
             <input type="submit" value="StudentSignIn" />
-          </button>
-          <button
-            onClick={() => setSignInType("vendor")}
-            className="btn mx-5 px-5 rounded-lg"
-          >
-            <input type="submit" value="VendorSignIn" />
           </button>
         </div>
       </form>

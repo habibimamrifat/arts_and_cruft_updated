@@ -12,7 +12,7 @@ const auth = getAuth(app)
 const AuthProvider = ({children}) => {
 
     
-    const [userDetail, setUserDetail]=useState({Name:'', MobileNo:'', Address:'',Institution:'', City:'', PaymentNumber:'', Hobby:'',PaymentMethod:'', Email:''})
+    
     
     const [productDetail, setProductDetail]=useState({productImg:'',productPrice:'',productName:'',aboutProduct:'',quantity:'',category:''})
 
@@ -79,8 +79,6 @@ const AuthProvider = ({children}) => {
         user,
         setUser,
         loading,
-        userDetail,
-        setUserDetail,
         productDetail,
         setProductDetail,
         customer,

@@ -100,6 +100,7 @@ const UpdateProfileData = () => {
                 required
               />
             </div>
+
             <div>
             <p>Select Hobby</p>
             <select
@@ -116,6 +117,8 @@ const UpdateProfileData = () => {
               <option>Crafting</option>
             </select>
             </div>
+
+            <div>
             <p>Select the payment method</p>
             <select
               value={paymentMethod}
@@ -130,8 +133,10 @@ const UpdateProfileData = () => {
               <option>Nagad</option>
               <option>Rocket</option>
             </select>
-
-            <input
+            </div>
+          
+            <div>
+              <input
               className="input input-bordered input-primary w-full max-w-xs m-2 hover:border-2 hover:border-blue-500"
               type="text"
               name="PaymentNumber"
@@ -139,6 +144,9 @@ const UpdateProfileData = () => {
               onChange={additionalData}
               required
             />
+
+            </div> 
+            
           </div>
 
         </div>

@@ -1,111 +1,253 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../provider/AuthProvider";
 import { sendEmailVerification } from "firebase/auth";
 
 const StudentSignUp = () => {
-  const [signUpType, setSignUpType] = useState("");
+
+  let paymentMethod, userHobby;
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  let userDetail = {userFbUid:'',Name:'', MobileNo:'', Address:'',Institution:'', City:'', PaymentNumber:'', Hobby:'',PaymentMethod:'', personalEmail:'', businessEmail:'',Password:'',ConfirmPassword:''}
+
   const { signUpUsers } = useContext(AuthContext);
 
-  const handleSignUp = (event) => {
+  function signUpUserData(event) {
     event.preventDefault();
 
-    setError('');
+    let value = event.target.value;
+    let name = event.target.name;
+    console.log(name, value);
+    userDetail[name]=value;
+    console.log(userDetail);
+  }
 
+  const handleSignUp = async (event) => {
+    event.preventDefault();
     const form = event.target;
-    const email = form.Email.value;
-    const password = form.Password.value;
-    const confirmpassword = form.ConfirmPassword.value;
 
-    if (password !== confirmpassword) {
+    console.log(userDetail);
+
+    // console.log(userDetail.businessEmail);
+    // console.log(userDetail.Password);
+    // console.log(userDetail.ConfirmPassword);
+
+    if (userDetail.Password !== userDetail.ConfirmPassword) {
       setError("Password is not matched");
       return;
-    } 
-    else if (!password.length > 6) {
+    } else if (
+      !userDetail.Password.length > 6 ||
+      !userDetail.ConfirmPassword > 6
+    ) {
       setError("Password must be of six characters");
       return;
     }
+    let email = userDetail.businessEmail;
+    let password = userDetail.Password;
+    console.log(email,password);
 
-    signUpUsers(email, password)
-    .then(result =>{
+    // create user with email and password
+
+    try {
+      // create user with email and password
+      const result = await signUpUsers(email, password);
       const signedUpUser = result.user;
+      const uid = signedUpUser.uid;
+  
+      // Update userDetail state with the new user information, including uid
+      userDetail.userFbUid= uid;
+      console.log(userDetail);
 
-      sendEmailVerification(signedUpUser)
-      .then(result =>{
-        console.log(result)
-        form.reset()
-        
-        navigate('/')
+     fetch('http://localhost:5000/signUp',{
+        method:'post',
+        headers:{
+          'content-type':'application/json'
+        },
+        body:JSON.stringify(userDetail)
       })
-      .catch(error=>{
-        setError(error)
+
+      .then((response) => response.json())
+      .then((responseData) => {
+        console.log(responseData);// Handle the data
+        if (responseData.insertedId)
+        {
+          alert('your account has been created please LOG IN');
+        }
       })
+      .catch((error) => {
+        console.error('Fetch error:', error);
+      });
+  
+      // send email verification
+      const verificationResult = await sendEmailVerification(signedUpUser);
+  
+      console.log(verificationResult);
 
-
-    })
-    
-    .catch(error=>{
+      
+  
+      form.reset();
+      navigate("/");
+    } catch (error) {
       setError(error);
-    })
-
-
-    if (signUpType === "student") {
-      // console.log('student');
-      //save into student database and call student profile
-    } else if (signUpType === "vendor") {
-      // console.log('vendor');
-      //save into student database and call vendor profile
     }
+
   };
+  // useEffect(() => {
+  //   console.log(userDetail);
+  // }, [userDetail]);
 
   return (
     <div>
       <form onSubmit={handleSignUp} className="mt-16">
-        <div className="flex flex-col justify-center items-center">
-          <h1 className="text-4xl mb-5">Sign UP</h1>
+        <h1 className="text-4xl mb-5 text-center">Sign UP</h1>
 
-          <h3>E-mail</h3>
-          <input
-            type="text"
-            placeholder="E-mail"
-            name="Email"
-            className="input input-bordered input-primary w-full max-w-xs"
-            required
-          />
+        <div className="flex justify-around">
+          <div>
+            <div>
+              <input
+                className="input p-5 input-bordered input-primary w-[90%] max-w-xs m-2 hover:border-2 hover:border-blue-500"
+                type="text"
+                name="Name"
+                placeholder="Name:"
+                onChange={signUpUserData}
+                required
+              />
+            </div>
+            <div>
+              <input
+                className="input p-5 input-bordered input-primary w-[90%] max-w-xs m-2 hover:border-2 hover:border-blue-500"
+                type="text"
+                name="MobileNo"
+                placeholder="Mobile Number:"
+                onChange={signUpUserData}
+                required
+              />
+            </div>
+            <div>
+              <input
+                className="input p-5 input-bordered input-primary w-[90%] max-w-xs m-2 hover:border-2 hover:border-blue-500"
+                type="text"
+                name="Address"
+                placeholder="Address:"
+                onChange={signUpUserData}
+                required
+              />
+            </div>
+            <div>
+              <input
+                className="input p-5 input-bordered input-primary w-[90%] max-w-xs m-2 hover:border-2 hover:border-blue-500"
+                type="text"
+                name="Institution"
+                placeholder="Institution:"
+                onChange={signUpUserData}
+                required
+              />
+            </div>
+            <div>
+              <input
+                className="input p-5 input-bordered input-primary w-[90%] max-w-xs m-2 hover:border-2 hover:border-blue-500"
+                type="email"
+                name="personalEmail"
+                placeholder="Personal Email:"
+                onChange={signUpUserData}
+                required
+              />
+            </div>
+            <div>
+              <input
+                className="input p-5 input-bordered input-primary w-[90%] max-w-xs m-2 hover:border-2 hover:border-blue-500"
+                type="text"
+                name="City"
+                placeholder="City:"
+                onChange={signUpUserData}
+                required
+              />
+            </div>
+          </div>
 
-          <h3>Password</h3>
-          <input
-            type="password"
-            placeholder="Password"
-            name="Password"
-            className="input input-bordered input-primary w-full max-w-xs"
-            required
-          />
-          <h3>Confirm Password</h3>
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            name="ConfirmPassword"
-            className="input input-bordered input-primary w-full max-w-xs"
-            required
-          />
+          <div>
+            <div>
+              <select
+                value={userHobby}
+                onChange={signUpUserData}
+                className="select select-primary w-[90%] max-w-xs hover:border-2 m-2 hover:border-blue-500"
+                name="Hobby"
+                required
+              >
+                <option value="default">Chose Hobby</option>
+                <option>Art</option>
+                <option>Crafting</option>
+              </select>
+            </div>
+
+            <div>
+              <select
+                value={paymentMethod}
+                onChange={signUpUserData}
+                className="select select-primary w-[90%] max-w-xs hover:border-2 m-2 hover:border-blue-500"
+                name="PaymentMethod"
+                required
+              >
+                <option value="default">Chose Payment Method</option>
+                <option>Bkash</option>
+                <option>Nagad</option>
+                <option>Rocket</option>
+              </select>
+            </div>
+
+            <div>
+              <input
+                className="input input-bordered input-primary w-[90%] max-w-xs m-2 hover:border-2 hover:border-blue-500 "
+                type="text"
+                name="PaymentNumber"
+                placeholder="Number:"
+                onChange={signUpUserData}
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <div>
+              <input
+                type="text"
+                placeholder="Business E-mail"
+                name="businessEmail"
+                onChange={signUpUserData}
+                className="input p-5 input-bordered input-primary w-[90%] max-w-xs m-2 hover:border-2 hover:border-blue-500"
+                required
+              />
+            </div>
+            <div>
+              <input
+                type="password"
+                placeholder="Password"
+                name="Password"
+                onChange={signUpUserData}
+                className="input p-5 input-bordered input-primary w-[90%] max-w-xs m-2 hover:border-2 hover:border-blue-500"
+                required
+              />
+            </div>
+            <div>
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                name="ConfirmPassword"
+                onChange={signUpUserData}
+                className="input p-5 input-bordered input-primary w-[90%] max-w-xs m-2 hover:border-2 hover:border-blue-500"
+                required
+              />
+            </div>
+          </div>
         </div>
 
         <div className="flex justify-center items-center mt-5">
           <button
-            onClick={() => setSignUpType("student")}
+            // onClick={() => setSignUpType("student")}
             className="btn mx-5 px-5 rounded-lg"
           >
             <input type="submit" value="StudentSignUp" />
-          </button>
-          <button
-            onClick={() => setSignUpType("vendor")}
-            className="btn mx-5 px-5 rounded-lg"
-          >
-            <input type="submit" value="VendorSignUp" />
           </button>
         </div>
       </form>
@@ -114,9 +256,6 @@ const StudentSignUp = () => {
         <h3>
           Already Signed Up? Please <Link to="/">Log In</Link>
         </h3>
-        <h2>
-          Sign up with <button>Google</button>
-        </h2>
       </div>
       <p className="text-center text-red-600">
         <small>{error}</small>{" "}

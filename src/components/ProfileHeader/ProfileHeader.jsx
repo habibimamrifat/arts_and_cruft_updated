@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from "../provider/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
@@ -6,6 +6,22 @@ const ProfileHeader = () => {
     const navigate = useNavigate();
 
   const { user, logOutUser } =useContext(AuthContext);
+  const [userData, setUserData]=useState({});
+ 
+  let userUid = user.uid
+ 
+ useEffect(()=>{
+  console.log(userUid);
+  fetch(`http://localhost:5000/profileHeader/${userUid}`)
+  .then((res) => res.json())
+  .then(data =>{
+    console.log(data);
+    setUserData(data);
+  })
+ },[userUid])
+
+ console.log(userData.Name)
+
   const handleLogOut = () => {
     logOutUser()
       .then((result) => {
@@ -29,13 +45,13 @@ const ProfileHeader = () => {
           </div>
 
           <div className='px-2 text-left'>
-            <h1 className="text-2xl font-bold">{user.email}</h1>
-            <p className="py-2">
-              Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-            </p>
+            <h1 className="text-2xl font-bold">{userData.Name && userData.Name.toUpperCase()}</h1>
+            <h1 className="text-2xl font-bold">{userData.Hobby && userData.Hobby.toUpperCase()}</h1>
+            <h1 className="text-2xl font-bold">{userData.City && userData.City.toUpperCase()}</h1>
+           
 
             <p className="text-white">
-              {user.email} <button onClick={handleLogOut}>Log Out</button>
+              {userData.businessEmail} <button onClick={handleLogOut}>Log Out</button>
             </p>
           </div>
         </div>
