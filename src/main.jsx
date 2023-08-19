@@ -25,6 +25,7 @@ import UpdateProfileData from './components/ProfileBody/UpdateProfileData';
 import ProfileBody from './components/ProfileBody/ProfileBody';
 import Settings from './components/ProfileBody/Settings';
 import CustomerForm from './components/CustomerForm/CustomerForm';
+import CreateAPost from './components/ProfileBody/CreateAPost';
 
 const router = createBrowserRouter([
   {
@@ -91,6 +92,10 @@ const router = createBrowserRouter([
       {
         path:'profile/settings',
         element:<Settings></Settings>
+      },
+      {
+        path:'profile/createAPost',
+        element:<CreateAPost></CreateAPost>
       },
     ]
     

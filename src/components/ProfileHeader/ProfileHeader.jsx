@@ -5,22 +5,23 @@ import { useNavigate } from "react-router-dom";
 const ProfileHeader = () => {
     const navigate = useNavigate();
 
-  const { user, logOutUser } =useContext(AuthContext);
+  const { user, logOutUser, setAboutUser } =useContext(AuthContext);
   const [userData, setUserData]=useState({});
  
   let userUid = user.uid
  
  useEffect(()=>{
-  console.log(userUid);
+  
   fetch(`http://localhost:5000/profileHeader/${userUid}`)
   .then((res) => res.json())
   .then(data =>{
-    console.log(data);
+    
     setUserData(data);
+    setAboutUser(data);
   })
  },[userUid])
 
- console.log(userData.Name)
+
 
   const handleLogOut = () => {
     logOutUser()

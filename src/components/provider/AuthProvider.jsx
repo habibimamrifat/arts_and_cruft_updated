@@ -11,12 +11,8 @@ const auth = getAuth(app)
 
 const AuthProvider = ({children}) => {
 
-    
-    
-    
-    const [productDetail, setProductDetail]=useState({productImg:'',productPrice:'',productName:'',aboutProduct:'',quantity:'',category:''})
-
     const [customer, setCustomer]=useState({customerName:'', customerMobileNumber:'',customerAddress:'',GrandTotal:'',customerCart:[]})
+    const [aboutUser, setAboutUser]=useState({});
 
     const [customerPermission , setCustomerPermission] =useState(false);
     const [finalCart,setFinalCart]= useState([])
@@ -78,9 +74,9 @@ const AuthProvider = ({children}) => {
     const authInfo={
         user,
         setUser,
+        aboutUser,
+        setAboutUser,
         loading,
-        productDetail,
-        setProductDetail,
         customer,
         customerPermission,
         finalCart,
