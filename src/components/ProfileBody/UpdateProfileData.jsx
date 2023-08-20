@@ -30,7 +30,7 @@ const UpdateProfileData = () => {
   
 
   return (
-    <div className="flex flex-col justify-center p-5">
+    <div className="flex flex-col justify-center mt-52 pb-10">
     
       <form onSubmit={setFinalData} className="text-center bg-slate-800 rounded-3xl" >
         <h1 className="font-extrabold text-6xl mb-3">Provide Additional Info</h1>

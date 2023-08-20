@@ -6,23 +6,24 @@ const CreateAPost = () => {
   "https://i.ibb.co/cYLCtBd/cre.png";
   let category;
   let productDetail = {
-    userFbUid: "",
-    id: "",
-    seller: "",
-    img: "",
-    price: "",
-    name: "",
-    aboutProduct: "",
+    userFbUid: null,
+    id: null,
+    seller: null,
+    img: null,
+    price: null,
+    name: null,
+    aboutProduct: null,
     quantity: 0,
-    category: "",
-    stock: "",
+    category: null,
+    stock: null,
+    option: null,
   };
 
   const navigate = useNavigate();
-  let status ='';
+
+  let option;
 
   const { aboutUser } = useContext(AuthContext);
-
 
   productDetail.userFbUid = aboutUser.userFbUid;
   productDetail.seller = aboutUser.Name;
@@ -33,128 +34,241 @@ const CreateAPost = () => {
     let value = event.target.value;
 
     productDetail[name] = value;
-
   }
 
-  function closePopUpForPost() {
+  function closePopUpForPostX() {
     console.log("going to close popup");
     navigate("/profile");
   }
 
   function createAPost() {
     console.log("i am posting");
-     console.log(productDetail)
-    closePopUpForPost();
+    console.log(productDetail);
+
+    fetch("http://localhost:5000/createAPost", {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(productDetail),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        console.log(responseData); // Handle the data
+        if (responseData.insertedId)
+        {
+          const id = responseData.insertedId;
+          const idAsObject ={id};
+          fetch(`http://localhost:5000/post/autoUpdate/${id}`,
+          {
+            method:'put',
+            headers:
+            {
+              'content-type':'application/json'
+            },
+            body:JSON.stringify(idAsObject)
+          })
+          .then((result)=>result.json())
+          .then(data=>{
+            console.log(data);
+            if(data.modifiedCount>0)
+            {
+              alert("your post has been created");
+            }
+          })
+        }
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+      });
+    navigate("/profile");
   }
 
   function createAPostAndSell() {
     console.log("create a post and sell");
-     console.log(productDetail)
-    closePopUpForPost();
-  }
-
-  function viewProductdetail (event)
-  {
-    event.preventDefault()
     console.log(productDetail);
-    if(status ==='post')
+
+    fetch("http://localhost:5000/createAPostAndSell", {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(productDetail),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        console.log(responseData); // Handle the data
+        // if (responseData.insertedId)
+        // {
+        //   alert('your account has been created please LOG IN');
+        // }
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+      });
+  }
+
+
+  function createSell() {
+    console.log("create sell");
+    console.log(productDetail);
+
+    fetch("http://localhost:5000/createASell", {
+      method: "post",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(productDetail),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        console.log(responseData); // Handle the data
+        if (responseData.insertedId)
+        {
+          const id = responseData.insertedId;
+          const idAsObject ={id};
+          fetch(`http://localhost:5000/sell/autoUpdate/${id}`,
+          {
+            method:'put',
+            headers:
+            {
+              'content-type':'application/json'
+            },
+            body:JSON.stringify(idAsObject)
+          })
+          .then((result)=>result.json())
+          .then(data=>{
+            console.log(data);
+            if(data.modifiedCount>0)
+            {
+              alert("your post has been created");
+            }
+          })
+        }
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+      });
+    navigate("/profile");
+  }
+
+  
+
+  function viewProductDetail(event) {
+
+    event.preventDefault();
+    console.log(productDetail.option);
+
+    if (productDetail.category && productDetail.option) 
     {
+      if (productDetail.option == "Post") {
         createAPost();
-    }
-    else if (status === 'postAndSell')
-    {
+      } 
+      else if (productDetail.option == "Post and Sell") {
         createAPostAndSell();
+      }
+      else if (productDetail.option == "Sell") {
+        createSell();
+      }
+    } 
+    else {
+      alert("please provide all the detail");
     }
   }
 
-  function setstatus(status)
-  {
-    console.log(status);
-  }
+  
 
   return (
-    <div className="mt-5">
+    <div className="mt-60 pb-10">
       <h1 className="text-center text-2xl text-white"> Create A Post</h1>
-      <form onSubmit={viewProductdetail} className="">
+      <form onSubmit={viewProductDetail} className="">
+        <div className="mt-2 flex flex-col gap-2 justify-center items-center">
+          <input
+            onChange={gatherProductDetail}
+            name="img"
+            type="text"
+            placeholder="Provide img url"
+            className="input input-bordered input-primary w-full max-w-xs hover:border-blue-500"
+            required
+          />
+          <small>
+            provide img url..To convirt your img into url use{" "}
+            <Link target="blank" className="underline" to="https://imgbb.com/">
+              imegebb
+            </Link>
+          </small>
+          <input
+            onChange={gatherProductDetail}
+            name="price"
+            type="text"
+            placeholder="Product Price"
+            className="input input-bordered input-primary w-full max-w-xs hover:border-blue-500 "
+            required
+          />
 
-            <div className="mt-2 flex flex-col gap-2 justify-center items-center">
-            <input
-                onChange={gatherProductDetail}
-                name="img"
-                type="text"
-                placeholder="Provide img url"
-                className="input input-bordered input-primary w-full max-w-xs hover:border-blue-500"
-                required
-            />
-            <small>
-                provide img url..To convirt your img into url use{" "}
-                <Link target="blank" className="underline" to="https://imgbb.com/">
-                imegebb
-                </Link>
-            </small>
-            <input
-                onChange={gatherProductDetail}
-                name="price"
-                type="text"
-                placeholder="Product Price"
-                className="input input-bordered input-primary w-full max-w-xs hover:border-blue-500 "
-                required
-            />
+          <input
+            onChange={gatherProductDetail}
+            name="name"
+            type="text"
+            placeholder="Product Name"
+            className="input input-bordered input-primary w-full max-w-xs hover:border-blue-500"
+            required
+          />
 
-            <input
-                onChange={gatherProductDetail}
-                name="name"
-                type="text"
-                placeholder="Product Name"
-                className="input input-bordered input-primary w-full max-w-xs hover:border-blue-500"
-                required
-            />
+          <input
+            onChange={gatherProductDetail}
+            name="aboutProduct"
+            type="text"
+            placeholder="About Product"
+            className="input input-bordered input-primary w-full max-w-xs hover:border-blue-500"
+            required
+          />
 
-            <input
-                onChange={gatherProductDetail}
-                name="aboutProduct"
-                type="text"
-                placeholder="About Product"
-                className="input input-bordered input-primary w-full max-w-xs hover:border-blue-500"
-                required
-            />
+          <input
+            onChange={gatherProductDetail}
+            name="stock"
+            type="text"
+            placeholder="Aveable Quantity"
+            className="input input-bordered input-primary w-full max-w-xs hover:border-blue-500"
+            required
+          />
 
-            <input
-                onChange={gatherProductDetail}
-                name="stock"
-                type="text"
-                placeholder="Aveable Quantity"
-                className="input input-bordered input-primary w-full max-w-xs hover:border-blue-500"
-                required
-            />
+          <select
+            value={category}
+            onChange={gatherProductDetail}
+            className="select select-primary w-full max-w-xs hover:border-2 hover:border-blue-500"
+            name="category"
+            required
+          >
+            <option value="default">Category</option>
+            <option>Art</option>
+            <option>craft</option>
+          </select>
 
-            <select
-                value={category}
-                onChange={gatherProductDetail}
-                className="select select-primary w-full max-w-xs hover:border-2 hover:border-blue-500"
-                name="category"
-                required
-            >
-                <option value="default">Category</option>
-                <option>Art</option>
-                <option>craft</option>
-            </select>
-            </div>
+          <select
+            value={option}
+            onChange={gatherProductDetail}
+            className="select select-primary w-full max-w-xs hover:border-2 hover:border-blue-500"
+            name="option"
+            required
+          >
+            <option value="default">Option</option>
 
-            <div className="flex justify-center gap-1 mt-2 ">
-                
-                <button onClick={()=>setstatus('post')} className="btn" type="submit">
-                    Post
-                </button>
-                <button onClick={()=>setstatus('postAndSell')} className="btn" type="submit" >
-                 Post and Sell
-                </button>
-                <button onClick={closePopUpForPost} className="btn">
-                    Close
-                </button>
+            <option>Post</option>
+            <option>Post and Sell</option>
+            <option>Sell</option>
+          </select>
+        </div>
 
-            </div>
+        <div className="flex justify-center gap-1 mt-2 ">
+          <button type="submit" className="btn">
+            Post
+          </button>
 
+          <button type="button" onClick={closePopUpForPostX} className="btn">
+            Close
+          </button>
+        </div>
       </form>
     </div>
   );

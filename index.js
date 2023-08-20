@@ -54,10 +54,77 @@ async function run() {
       res.send(result);
     })
 
-// ...................post collection database set up.................
+// ...................post collection database set up create post create sell and create post and sell.................
+const postCollection = artAndCraftDatabase.collection('postsCollection')
+const shopCollection = artAndCraftDatabase.collection('shopsCollection')
 
+app.post('/createAPost',async(req,res)=>{
+  const createPost = req.body;
+  console.log("create a post")
+  console.log(createPost);
+
+  const result = await postCollection.insertOne(createPost);
+  res.send(result);
+})
+app.put('/post/autoUpdate/:id', async(req,res)=>{
+  const id = req.params.id;
+  const updateId = req.body;
+  
+  const filter = {_id: new ObjectId(id)}
+  const option = {upsert:true}
+  const updatePost = {
+    $set:{
+      id : updateId.id
+    }
+  }
+  const result = await postCollection.updateOne(filter, updatePost,option)
+  res.send(result);
+})
+
+app.post('/createAPostAndSell',async(req,res)=>{
+  const createPost = req.body;
+  console.log("create a post and sell");
+  console.log(createPost);
+
+  // const result = await userCollection.insertOne(user);
+  res.send(createPost);
+})
+
+app.post('/createASell',async(req,res)=>{
+  const createPost = req.body;
+  console.log("create a sell");
+  console.log(createPost);
+
+  const result = await shopCollection.insertOne(createPost);
+  res.send(result);
+})
+app.put('/sell/autoUpdate/:id', async(req,res)=>{
+  const id = req.params.id;
+  const updateId = req.body;
+  
+  const filter = {_id: new ObjectId(id)}
+  const option = {upsert:true}
+  const updatePost = {
+    $set:{
+      id : updateId.id
+    }
+  }
+  const result = await shopCollection.updateOne(filter, updatePost,option)
+  res.send(result);
+})
     
+// .........................profile middle body set up...........................
 
+app.get('/profile/middleBody/:userFbUid', async(req, res)=>{
+      const userFbUid = req.params.userFbUid;
+      if(userFbUid !== undefined)
+      {
+        const query = {userFbUid : userFbUid}
+        const result = await postCollection.find(query).toArray();
+        res.send(result);
+      }
+      
+})
 
 
 

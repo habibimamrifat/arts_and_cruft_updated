@@ -35,7 +35,7 @@ const ProfileHeader = () => {
   };
 
   return (
-    <div className=" border-2 border-bl sticky top-0">
+    <div className=" border-2 border-bl fixed w-full top-0">
       <div className="  bg-base-200">
         <div className=" flex justify-start items-center py-2">
           <div className="w-52 px-2">

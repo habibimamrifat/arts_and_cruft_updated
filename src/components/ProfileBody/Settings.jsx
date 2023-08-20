@@ -27,7 +27,7 @@ const Settings = () => {
         }
     }
     return (
-        <div className='pt-20'>
+        <div className='mt-52 pb-10'>
             <form onSubmit={ChangePassword} className='flex flex-col justify-center items-center gap-3'>
                 <h1 className='text-4xl'>Change password</h1>
                 <input  name='password' type="text" placeholder='Create new passeord' className="input input-bordered input-primary w-full max-w-xs" />
