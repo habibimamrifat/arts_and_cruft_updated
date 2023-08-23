@@ -27,6 +27,7 @@ import Settings from './components/ProfileBody/Settings';
 import CustomerForm from './components/CustomerForm/CustomerForm';
 import CreateAPost from './components/ProfileBody/CreateAPost';
 import Viewprofile from './ViewProfile/Viewprofile';
+import EditPost from './components/ProfileBody/EditPost';
 
 const router = createBrowserRouter([
   {
@@ -97,6 +98,11 @@ const router = createBrowserRouter([
       {
         path:'profile/createAPost',
         element:<CreateAPost></CreateAPost>
+      },
+      {
+        path:'/profile/editPost/:id',
+        element:<EditPost></EditPost>,
+        loader:({params})=>fetch(`http://localhost:5000/post/getEditPost/${params.id}`)
       },
     ]
     

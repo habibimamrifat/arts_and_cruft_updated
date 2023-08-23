@@ -168,6 +168,36 @@ async function run() {
 
     })
 
+    app.get('/post/getEditPost/:itemId', async(req,res)=>{
+      const itemId = req.params.itemId;
+      console.log(itemId);
+      const query = { id : itemId };
+      let result = await postCollection.findOne(query);
+      res.send(result)
+
+    })
+
+    app.put("/post/updatePost/:id", async (req, res) => {
+      const id = req.params.id;
+      const updatedPostData = req.body;
+      console.log(id,updatedPostData);
+
+      const filter = { id: id };
+      const option = { upsert: true };
+      const updatePost = {
+        $set: {
+          img: updatedPostData.img,
+          category: updatedPostData.category,
+          name: updatedPostData.name,
+          price: updatedPostData.price,
+          stock: updatedPostData.stock,
+          
+        },
+      };
+      const result = await postCollection.updateOne(filter, updatePost, option);
+      res.send(result);
+    });
+
 
 
 

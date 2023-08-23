@@ -5,10 +5,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 
+
 const ProfileMiddleBody = () => {
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   let [allPost, setAllPost] = useState([]);
   const [clickedItemId, setClickedItemId] = useState(null);
-  const navigate = useNavigate();
+  
 
   const { aboutUser } = useContext(AuthContext);
 
@@ -34,11 +37,11 @@ const ProfileMiddleBody = () => {
     fetchData();
   }, [aboutUser]);
 
-  function toggleMenu(itemId) {
-    // Toggle the clicked item's ID
+ function toggleMenu(itemId) {
     if (clickedItemId === itemId) {
-      setClickedItemId(null);
+      setIsMenuOpen(!isMenuOpen); // Toggle the menu state
     } else {
+      setIsMenuOpen(true);
       setClickedItemId(itemId);
     }
   }
@@ -78,11 +81,12 @@ const ProfileMiddleBody = () => {
         }
       });
 
-    setClickedItemId(null);
+      setIsMenuOpen(false);
   }
 
   function editPost(itemId) {
     console.log(itemId);
+    setIsMenuOpen(false);
   }
 
   function deleteFromPosts(itemId) {
@@ -94,12 +98,19 @@ const ProfileMiddleBody = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        if (data.deleteCount > 0) {
+        if (data.deletedCount > 0) {
           alert("the post has been deleted");
-          navigate("/profile");
+          const updatedPosts = allPost.filter(post=>post.id !== itemId)
+          setAllPost(updatedPosts);
+  
         }
+       
       });
-    setClickedItemId(null);
+      setIsMenuOpen(false);
+  }
+  function closeDropdown() {
+   
+    setIsMenuOpen(false);
   }
   
   return (
@@ -134,7 +145,7 @@ const ProfileMiddleBody = () => {
                 </button>
               </div>
               <div>
-                {clickedItemId === post.id && (
+                {isMenuOpen && clickedItemId === post.id && (
                   <div className="flex flex-col relative  rounded-md bg-slate-600">
                     <button
                       onClick={() => putOnSell(post.id)}
@@ -142,17 +153,27 @@ const ProfileMiddleBody = () => {
                     >
                       Sell
                     </button>
-                    <button
-                      onClick={() => editPost(post.id)}
-                      className="px-5 m-1 hover:bg-slate-100 rounded-xl"
-                    >
-                      Edit
-                    </button>
+
+                   <button className="px-5 m-1 hover:bg-slate-100 rounded-xl">
+                   <Link to={`/profile/editPost/${post.id}`}>
+                   EditPost
+                   </Link>
+                   </button>
+                  
+
                     <button
                       onClick={() => deleteFromPosts(post.id)}
                       className="px-5 m-1 hover:bg-slate-100 rounded-xl text-red-400"
                     >
                       Delete
+                    </button>
+
+                    
+                    <button
+                      onClick={() => closeDropdown(post.id)}
+                      className="px-5 m-1 hover:bg-slate-100 rounded-xl text-red-400"
+                    >
+                      Close
                     </button>
 
                   </div>

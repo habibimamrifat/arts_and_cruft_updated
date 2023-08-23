@@ -89,29 +89,7 @@ const CreateAPost = () => {
     navigate("/profile");
   }
 
-  function createAPostAndSell() {
-    console.log("create a post and sell");
-    console.log(productDetail);
 
-    fetch("http://localhost:5000/createAPostAndSell", {
-      method: "post",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(productDetail),
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        console.log(responseData); // Handle the data
-        // if (responseData.insertedId)
-        // {
-        //   alert('your account has been created please LOG IN');
-        // }
-      })
-      .catch((error) => {
-        console.error("Fetch error:", error);
-      });
-  }
 
 
   function createSell() {
@@ -169,9 +147,7 @@ const CreateAPost = () => {
       if (productDetail.option == "Post") {
         createAPost();
       } 
-      else if (productDetail.option == "Post and Sell") {
-        createAPostAndSell();
-      }
+      
       else if (productDetail.option == "Sell") {
         createSell();
       }
@@ -260,7 +236,6 @@ const CreateAPost = () => {
             <option value="default">Option</option>
 
             <option>Post</option>
-            <option>Post and Sell</option>
             <option>Sell</option>
           </select>
         </div>
