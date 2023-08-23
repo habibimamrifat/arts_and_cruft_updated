@@ -9,7 +9,7 @@ const StudentSignUp = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  let userDetail = {userFbUid:'',Name:'', MobileNo:'', Address:'',Institution:'', City:'', PaymentNumber:'', Hobby:'',PaymentMethod:'', personalEmail:'', businessEmail:'',Password:'',ConfirmPassword:''}
+  let userDetail = {userFbUid:'',userImg:'',Name:'', MobileNo:'', Address:'',Institution:'', City:'', PaymentNumber:'', Hobby:'',PaymentMethod:'', personalEmail:'', businessEmail:'',Password:'',ConfirmPassword:''}
 
   const { signUpUsers } = useContext(AuthContext);
 
@@ -104,6 +104,22 @@ const StudentSignUp = () => {
 
         <div className="flex justify-around">
           <div>
+          <div>
+              <input
+                className="input p-5 input-bordered input-primary w-[90%] max-w-xs m-2 hover:border-2 hover:border-blue-500"
+                type="text"
+                name="userImg"
+                placeholder="profile Img Link:"
+                onChange={signUpUserData}
+                required
+              />
+            </div>
+            <small>
+            provide img url..To convirt your img into url use{" "}
+            <Link target="blank" className="underline" to="https://imgbb.com/">
+              imegebb
+            </Link>
+          </small>
             <div>
               <input
                 className="input p-5 input-bordered input-primary w-[90%] max-w-xs m-2 hover:border-2 hover:border-blue-500"

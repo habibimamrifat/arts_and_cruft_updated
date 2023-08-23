@@ -26,6 +26,7 @@ import ProfileBody from './components/ProfileBody/ProfileBody';
 import Settings from './components/ProfileBody/Settings';
 import CustomerForm from './components/CustomerForm/CustomerForm';
 import CreateAPost from './components/ProfileBody/CreateAPost';
+import Viewprofile from './ViewProfile/Viewprofile';
 
 const router = createBrowserRouter([
   {
@@ -99,6 +100,10 @@ const router = createBrowserRouter([
       },
     ]
     
+  },
+  {
+    path:'/viewProfile/:userFbUid',
+    element:<Viewprofile></Viewprofile>
   }
  
 ]);

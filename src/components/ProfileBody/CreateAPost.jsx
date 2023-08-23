@@ -7,6 +7,7 @@ const CreateAPost = () => {
   let category;
   let productDetail = {
     userFbUid: null,
+    userImg:null,
     id: null,
     seller: null,
     img: null,
@@ -14,9 +15,11 @@ const CreateAPost = () => {
     name: null,
     aboutProduct: null,
     quantity: 0,
+    totalPrice:0,
     category: null,
     stock: null,
     option: null,
+    paymentMethod:null
   };
 
   const navigate = useNavigate();
@@ -27,6 +30,8 @@ const CreateAPost = () => {
 
   productDetail.userFbUid = aboutUser.userFbUid;
   productDetail.seller = aboutUser.Name;
+  productDetail.userImg = aboutUser.userImg;
+
 
   function gatherProductDetail(event) {
     event.preventDefault();

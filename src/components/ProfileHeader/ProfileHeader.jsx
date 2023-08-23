@@ -37,18 +37,18 @@ const ProfileHeader = () => {
   return (
     <div className=" border-2 border-bl fixed w-full top-0">
       <div className="  bg-base-200">
-        <div className=" flex justify-start items-center py-2">
-          <div className="w-52 px-2">
+        <div className=" flex justify-start items-center py-2 mx-2">
+          <div className="w-40 h-40 px-2 rounded-full bg-white overflow-hidden">
             <img
-              src="../../../public/best-ai-generate-images.png"
-              className="object-cover rounded-full shadow-2xl w-[100] h-[100]"
+              src={userData.userImg && userData.userImg}
+              className="  shadow-2xl w-full h-full object-cover "
             />
           </div>
 
           <div className='px-2 text-left'>
-            <h1 className="text-2xl font-bold">{userData.Name && userData.Name.toUpperCase()}</h1>
+            <h1 className="text-xl font-bold">{userData.Name && userData.Name.toUpperCase()}</h1>
             <h1 className="text-2xl font-bold">{userData.Hobby && userData.Hobby.toUpperCase()}</h1>
-            <h1 className="text-2xl font-bold">{userData.City && userData.City.toUpperCase()}</h1>
+            <h1 className="text-xl font-bold">{userData.City && userData.City.toUpperCase()}</h1>
            
 
             <p className="text-white">
