@@ -17,6 +17,7 @@ const AuthProvider = ({children}) => {
     const [customerPermission , setCustomerPermission] =useState(false);
     const [finalCart,setFinalCart]= useState([])
     const [finalGrandTotal,setFinalGrandTotal]= useState(0);
+    const [reload,setReload]=useState(false);
 
     const [user, setUser] = useState(null);
     const [loading,setLoading] = useState(true)
@@ -90,7 +91,9 @@ const AuthProvider = ({children}) => {
         logOutUser,
         popupGoogleSignIn,
         handleResetPassword,
-        changePasswordFromSettings
+        changePasswordFromSettings,
+        reload,
+        setReload
     }
 
     return (

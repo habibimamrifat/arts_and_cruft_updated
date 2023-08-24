@@ -50,6 +50,53 @@ async function run() {
       res.send(result);
     });
 
+    // let updatedUserData = {userImg:'',Name:'', MobileNo:'', Address:'',Institution:'', City:'', PaymentNumber:'', Hobby:'',PaymentMethod:'', personalEmail:'',}
+
+    app.put("/user/updateUser/:userFbUid", async (req, res) => {
+      const userFbUid = req.params.userFbUid;
+      const updatedUserData = req.body;
+      console.log(userFbUid,updatedUserData);
+
+      const filter = { userFbUid: userFbUid };
+      const option = { upsert: true };
+      const updatePost = {
+        $set: {
+          userImg: updatedUserData.userImg,
+          seller: updatedUserData.Name,
+          paymentNumber: updatedUserData.PaymentNumber,
+          paymentMethod: updatedUserData.PaymentMethod,
+        },
+      };
+      let resultPost = await postCollection.updateMany(filter, updatePost, option);
+      // res.send(resultPost);
+      const updateShop = {
+        $set: {
+          userImg: updatedUserData.userImg,
+          seller: updatedUserData.Name,
+          paymentNumber: updatedUserData.PaymentNumber,
+          paymentMethod: updatedUserData.PaymentMethod,
+        },
+      };
+      let resultShop = await shopCollection.updateMany(filter, updateShop, option);
+      // res.send(resultShop);
+      const updateUser = {
+        $set: {
+          userImg: updatedUserData.userImg,
+          Name: updatedUserData.Name,
+          MobileNo: updatedUserData.MobileNo,
+          Address: updatedUserData.Address,
+          City: updatedUserData.City,
+          PaymentNumber: updatedUserData.PaymentNumber,
+          Hobby: updatedUserData.Hobby,
+          PaymentMethod: updatedUserData.PaymentMethod,
+          personalEmail: updatedUserData.personalEmail,
+        },
+      };
+      let result = await userCollection.updateOne(filter, updateUser, option);
+      res.send(result);
+    });
+
+
     // ...................post collection database set up create post create sell and create post and sell.................
     const postCollection = artAndCraftDatabase.collection("postsCollection");
     const shopCollection = artAndCraftDatabase.collection("shopsCollection");
@@ -197,6 +244,22 @@ async function run() {
       const result = await postCollection.updateOne(filter, updatePost, option);
       res.send(result);
     });
+
+// ..........................view profile.............................. 
+app.get(`/viewProfile/getProfileData/:userFbUid`,async(req,res)=>{
+  const uid = req.params.userFbUid;
+  const query = { userFbUid: uid };
+  const result = await userCollection.findOne(query);
+  res.send(result);
+
+})
+// ............................profile right Side..................................
+app.get(`/profile/inventory/:userFbUid`,async(req,res)=>{
+  const uid = req.params.userFbUid;
+  const query = { userFbUid: uid };
+  const result = await shopCollection.find(query).toArray();
+  res.send(result);
+})
 
 
 

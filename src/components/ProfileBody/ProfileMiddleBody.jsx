@@ -84,11 +84,6 @@ const ProfileMiddleBody = () => {
       setIsMenuOpen(false);
   }
 
-  function editPost(itemId) {
-    console.log(itemId);
-    setIsMenuOpen(false);
-  }
-
   function deleteFromPosts(itemId) {
     console.log("calling from delete");
     console.log(itemId);
@@ -123,7 +118,7 @@ const ProfileMiddleBody = () => {
               className="card  shadow-x bg-slate-800 mt-2 mx-[5%] hover:border-solid hover:border-2 hover:border-slate-400 "
             >
               <div className="flex items-center justify-between">
-                <Link to={`/viewProfile/:${post.userFbUid}`}>
+                <Link to={`/viewProfile/${post.userFbUid}`}>
                   <div className="flex px-5 py-2  items-center hover:bg-slate-600 rounded-full">
                     <div className="h-10 w-10 rounded-full bg-white mr-5">
                       <img

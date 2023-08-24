@@ -28,6 +28,7 @@ import CustomerForm from './components/CustomerForm/CustomerForm';
 import CreateAPost from './components/ProfileBody/CreateAPost';
 import Viewprofile from './ViewProfile/Viewprofile';
 import EditPost from './components/ProfileBody/EditPost';
+import Inventory from './components/ProfileBody/Inventory';
 
 const router = createBrowserRouter([
   {
@@ -104,12 +105,17 @@ const router = createBrowserRouter([
         element:<EditPost></EditPost>,
         loader:({params})=>fetch(`http://localhost:5000/post/getEditPost/${params.id}`)
       },
+      {
+        path:'/profile/inventory',
+        element:<Inventory></Inventory>
+      }
     ]
     
   },
   {
     path:'/viewProfile/:userFbUid',
-    element:<Viewprofile></Viewprofile>
+    element:<Viewprofile></Viewprofile>,
+    loader:({params})=>fetch(`http://localhost:5000/viewProfile/getProfileData/${params.userFbUid}`)
   }
  
 ]);

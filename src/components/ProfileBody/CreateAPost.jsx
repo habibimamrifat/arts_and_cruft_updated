@@ -19,7 +19,8 @@ const CreateAPost = () => {
     category: null,
     stock: null,
     option: null,
-    paymentMethod:null
+    paymentMethod:null,
+    paymentNumber:null
   };
 
   const navigate = useNavigate();
@@ -31,6 +32,8 @@ const CreateAPost = () => {
   productDetail.userFbUid = aboutUser.userFbUid;
   productDetail.seller = aboutUser.Name;
   productDetail.userImg = aboutUser.userImg;
+  productDetail.paymentMethod = aboutUser.PaymentMethod;
+  productDetail.paymentNumber = aboutUser.PaymentNumber;
 
 
   function gatherProductDetail(event) {
