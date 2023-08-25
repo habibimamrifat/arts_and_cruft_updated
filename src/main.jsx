@@ -29,6 +29,7 @@ import CreateAPost from './components/ProfileBody/CreateAPost';
 import Viewprofile from './ViewProfile/Viewprofile';
 import EditPost from './components/ProfileBody/EditPost';
 import Inventory from './components/ProfileBody/Inventory';
+import InventoryDetail from './components/InventoryDetail/InventoryDetail';
 
 const router = createBrowserRouter([
   {
@@ -116,6 +117,11 @@ const router = createBrowserRouter([
     path:'/viewProfile/:userFbUid',
     element:<Viewprofile></Viewprofile>,
     loader:({params})=>fetch(`http://localhost:5000/viewProfile/getProfileData/${params.userFbUid}`)
+  },
+  {
+    path:'/inventoryDetail',
+    element:<InventoryDetail></InventoryDetail>
+    
   }
  
 ]);

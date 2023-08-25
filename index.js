@@ -261,6 +261,13 @@ app.get(`/profile/inventory/:userFbUid`,async(req,res)=>{
   res.send(result);
 })
 
+app.get(`/inventoryDetail/:userFbUid`,async(req,res)=>{
+  const uid = req.params.userFbUid;
+  const query = { userFbUid: uid };
+  const result = await shopCollection.find(query).toArray();
+  res.send(result);
+})
+
 
 
 
