@@ -7,8 +7,7 @@ import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 
 
 const Inventory = () => {
-    let totalProduct =0;
-    let totalItemPrice =0;
+    
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     let [allPost, setAllPost] = useState([]);
     const [summary, setSummary]=useState({})
@@ -30,23 +29,26 @@ const Inventory = () => {
               //   console.log(data);
               setAllPost(data);
               //   console.log(allPost);
-              summaryCalculator();
+              
             });
         }
       }
-      console.log(allPost);
+      // console.log(allPost);
+    
 
-      function summaryCalculator()
-      {
-            allPost.map((post)=>{
-                totalProduct =totalProduct + post.stock;
-                totalItemPrice= totalItemPrice + (post.stock * post.price)
-              })
-              let summaryProvider={totalProduct, totalItemPrice}
-              console.log(summaryProvider);
-              setSummary(summaryProvider);
-
-      }
+   
+      useEffect(() => {
+        let totalProduct =0;
+        let totalItemPrice =0;
+        allPost.map((post)=>{
+          totalProduct =totalProduct + parseInt(post.stock) ;
+          totalItemPrice= totalItemPrice + (parseInt(post.stock)  * parseInt(post.price) )
+        })
+        let summaryProvider={totalProduct, totalItemPrice}
+        // console.log(summaryProvider);
+        setSummary(summaryProvider);
+       
+      }, [allPost]);
     
       useEffect(() => {
         fetchData();
@@ -63,48 +65,12 @@ const Inventory = () => {
         }
       }
     
-      function putOnSell(itemId) {
-        console.log("calling from sell");
-        console.log(itemId);
     
-        fetch(`http://localhost:5000/post/checkBeforePutOnSell/${itemId}`)
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data.permission);
-            if (data.permission) {
-              console.log(itemId);
-              fetch(`http://localhost:5000/post/putOnSell/${itemId}`)
-                .then((res) => res.json())
-                .then((data) => {
-                  console.log(data);
-    
-                  fetch(`http://localhost:5000/post/putOnSell/storeInDatabase`, {
-                    method: "post",
-                    headers: {
-                      "content-type": "application/json",
-                    },
-                    body: JSON.stringify(data),
-                  })
-                    .then((res) => res.json())
-                    .then((data) => {
-                      console.log(data);
-                      if (data.insertedId) {
-                        alert("your item is on sell now");
-                      }
-                    });
-                });
-            } else {
-              alert("this product is already on sell");
-            }
-          });
-    
-          setIsMenuOpen(false);
-      }
     
       function deleteFromPosts(itemId) {
         console.log("calling from delete");
         console.log(itemId);
-        fetch(`http://localhost:5000/post/deleteFromPost/${itemId}`, {
+        fetch(`http://localhost:5000/inventory/deleteFromInventory/${itemId}`, {
           method: "delete",
         })
           .then((res) => res.json())
@@ -166,15 +132,10 @@ const Inventory = () => {
                 <div>
                   {isMenuOpen && clickedItemId === post.id && (
                     <div className="flex flex-col relative  rounded-md bg-slate-600">
-                      <button
-                        onClick={() => putOnSell(post.id)}
-                        className="px-5 m-1 hover:bg-slate-100 rounded-xl"
-                      >
-                        Sell
-                      </button>
+                      
   
                      <button className="px-5 m-1 hover:bg-slate-100 rounded-xl">
-                     <Link to={`/profile/editPost/${post.id}`}>
+                     <Link to={`/profile/editInventory/${post.id}`}>
                      EditPost
                      </Link>
                      </button>
@@ -208,9 +169,12 @@ const Inventory = () => {
                 </div>
   
                 <div className="h-28 p-2 px-4">
-                  <p>{post.seller && post.seller.toUpperCase()}</p>
-                  <h2 className="p-1">{post.name && post.name.toUpperCase()}</h2>
-                  <p>{post.aboutProduct}</p>
+                <p>{post.price && post.price} TK</p>
+                <h2 className="p-1">{post.name && post.name.toUpperCase()}</h2>
+                  <p>Seller : {post.seller && post.seller.toUpperCase()}</p>
+                  <p>Max Quantity:{post.stock && post.stock} </p>
+                  
+                  <p>Detail:{post.aboutProduct}</p>
                 </div>
               </div>
             ))}
@@ -219,12 +183,12 @@ const Inventory = () => {
         </div>
             </div>
 
-            <div className="col-span-3 bg-slate-800 rounded-2xl">
-                <div>
+            <div className="col-span-3 bg-slate-800 rounded-2xl m-2">
+                <div className="text-center mt-5">
                     <h1 className="text-2xl font-bold">Inventory Summary</h1>
                     <small>On Sell</small>
                     <h1>Total Item: {summary.totalProduct}</h1>
-                    <h1>Total Price: {summary.totalItemPrice}</h1>
+                    <h1>Total Price: {summary.totalItemPrice} TK</h1>
                     
                 </div>
             </div>

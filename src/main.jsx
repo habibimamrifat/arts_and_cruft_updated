@@ -29,6 +29,7 @@ import CreateAPost from './components/ProfileBody/CreateAPost';
 import Viewprofile from './ViewProfile/Viewprofile';
 import EditPost from './components/ProfileBody/EditPost';
 import Inventory from './components/ProfileBody/Inventory';
+import EditInventory from './components/ProfileBody/EditInventory';
 
 const router = createBrowserRouter([
   {
@@ -108,7 +109,12 @@ const router = createBrowserRouter([
       {
         path:'/profile/inventory',
         element:<Inventory></Inventory>
-      }
+      },
+      {
+        path:'/profile/editInventory/:id',
+        element:<EditInventory></EditInventory>,
+        loader:({params})=>fetch(`http://localhost:5000/inventory/getEditInventory/${params.id}`)
+      },
     ]
     
   },
