@@ -29,7 +29,11 @@ import CreateAPost from './components/ProfileBody/CreateAPost';
 import Viewprofile from './ViewProfile/Viewprofile';
 import EditPost from './components/ProfileBody/EditPost';
 import Inventory from './components/ProfileBody/Inventory';
+<<<<<<< HEAD
 import InventoryDetail from './components/InventoryDetail/InventoryDetail';
+=======
+import EditInventory from './components/ProfileBody/EditInventory';
+>>>>>>> 1abba2b47fc1873bbe957d43facce093b0cf3c6d
 
 const router = createBrowserRouter([
   {
@@ -109,7 +113,12 @@ const router = createBrowserRouter([
       {
         path:'/profile/inventory',
         element:<Inventory></Inventory>
-      }
+      },
+      {
+        path:'/profile/editInventory/:id',
+        element:<EditInventory></EditInventory>,
+        loader:({params})=>fetch(`http://localhost:5000/inventory/getEditInventory/${params.id}`)
+      },
     ]
     
   },

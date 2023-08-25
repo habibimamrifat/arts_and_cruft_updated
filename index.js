@@ -253,7 +253,13 @@ app.get(`/viewProfile/getProfileData/:userFbUid`,async(req,res)=>{
   res.send(result);
 
 })
-// ............................profile right Side..................................
+
+
+
+
+
+
+// ............................profile right Side  Inventory..................................
 app.get(`/profile/inventory/:userFbUid`,async(req,res)=>{
   const uid = req.params.userFbUid;
   const query = { userFbUid: uid };
@@ -267,6 +273,47 @@ app.get(`/inventoryDetail/:userFbUid`,async(req,res)=>{
   const result = await shopCollection.find(query).toArray();
   res.send(result);
 })
+
+
+app.delete('/inventory/deleteFromInventory/:itemId', async(req,res)=>{
+  const itemId = req.params.itemId;
+  console.log(itemId);
+  const query = { id : itemId };
+  let result = await shopCollection.deleteOne(query);
+  res.send(result)
+
+})
+
+app.get('/inventory/getEditInventory/:itemId', async(req,res)=>{
+  const itemId = req.params.itemId;
+  console.log(itemId);
+  const query = { id : itemId };
+  let result = await shopCollection.findOne(query);
+  res.send(result)
+
+})
+
+app.put("/inventory/updateInventory/:id", async (req, res) => {
+  const id = req.params.id;
+  const updatedPostData = req.body;
+  console.log(id,updatedPostData);
+
+  const filter = { id: id };
+  const option = { upsert: true };
+  const updatePost = {
+    $set: {
+      img: updatedPostData.img,
+      category: updatedPostData.category,
+      name: updatedPostData.name,
+      price: updatedPostData.price,
+      stock: updatedPostData.stock,
+      
+    },
+  };
+  const result = await shopCollection.updateOne(filter, updatePost, option);
+  res.send(result);
+});
+
 
 
 
