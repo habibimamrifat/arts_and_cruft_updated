@@ -103,8 +103,8 @@ const ProfileMiddleBody = () => {
       });
       setIsMenuOpen(false);
   }
-  function closeDropdown() {
-   
+  function closeDropdown(itemId) {
+   console.log(itemId);
     setIsMenuOpen(false);
   }
   
@@ -122,13 +122,13 @@ const ProfileMiddleBody = () => {
                   <div className="flex px-5 py-2  items-center hover:bg-slate-600 rounded-full">
                     <div className="h-10 w-10 rounded-full bg-white mr-5">
                       <img
-                        src={aboutUser.userImg}
+                        src={post.userImg}
                         alt=""
                         className="h-full w-full object-fill rounded-full"
                       />
                     </div>
                     <div>
-                      <p>{aboutUser.Name}</p>
+                      <p>{post.seller}</p>
                     </div>
                   </div>
                 </Link>

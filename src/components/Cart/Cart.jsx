@@ -5,34 +5,35 @@ import { Bars4Icon } from "@heroicons/react/24/solid";
 import { AuthContext } from "../provider/AuthProvider";
 
 const Cart = ({ cart, dltCart }) => {
-  // console.log(cart);
-  const {customer, setCustomer}=useContext(AuthContext);
-  useEffect(()=>{
-    let customerProduct={...customer,customerCart:cart}
-    setCustomer(customerProduct);
-  },[cart])
 
-  console.log(customer);
+  // console.log(cart);
+  // const {customer, setCustomer}=useContext(AuthContext);
+  // useEffect(()=>{
+  //   let customerProduct={...customer,customerCart:cart}
+  //   setCustomer(customerProduct);
+  // },[cart])
+
+  // console.log(customer);
 
   let price = 0;
   let tax = 0;
   let grandTotal = 0;
   let quantity = 0;
   let shipping = 0;
-  console.log(cart);
+  // console.log(cart);
 
   for (const product of cart) {
-    quantity = quantity + product.quantity;
-    price = price + product.price * product.quantity;
-    shipping = shipping + product.quantity * product.shipping;
+    quantity = quantity + parseInt(product.quantity);
+    price = price + parseInt(product.price) * parseInt(product.quantity);
+    shipping = shipping + parseInt(product.quantity) * product.shipping;
     tax = (price * 10) / 100;
     grandTotal = price + shipping;
   }
 
-  useEffect(()=>{
-    let customerProduct={...customer,GrandTotal:grandTotal}
-    setCustomer(customerProduct);
-  },[grandTotal])
+  // useEffect(()=>{
+  //   let customerProduct={...customer,GrandTotal:grandTotal}
+  //   setCustomer(customerProduct);
+  // },[grandTotal])
 
   return (
     <div className="max-h-screen bg-slate-800 ml-5 items-center px-5 py-5 rounded-lg hover:border-solid hover:border-2 hover:border-slate-400">

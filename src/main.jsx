@@ -29,11 +29,9 @@ import CreateAPost from './components/ProfileBody/CreateAPost';
 import Viewprofile from './ViewProfile/Viewprofile';
 import EditPost from './components/ProfileBody/EditPost';
 import Inventory from './components/ProfileBody/Inventory';
-<<<<<<< HEAD
 import InventoryDetail from './components/InventoryDetail/InventoryDetail';
-=======
 import EditInventory from './components/ProfileBody/EditInventory';
->>>>>>> 1abba2b47fc1873bbe957d43facce093b0cf3c6d
+import ViewDetail from './components/ViewDetail/ViewDetail';
 
 const router = createBrowserRouter([
   {
@@ -66,7 +64,7 @@ const router = createBrowserRouter([
       },
       {
         path:'/confirmPerches',
-        element:<ConfirmPerchese></ConfirmPerchese>
+        element:<ConfirmPerchese></ConfirmPerchese>,
       },
       {
         path:'/oederdetail',
@@ -75,7 +73,8 @@ const router = createBrowserRouter([
       },
       {
         path:'/Payment',
-        element:<PrivateRoute><Payment></Payment></PrivateRoute>
+        element:<PrivateRoute><Payment></Payment></PrivateRoute>,
+        loader:LoadDataFromDb
 
       },
       {
@@ -128,10 +127,16 @@ const router = createBrowserRouter([
     loader:({params})=>fetch(`http://localhost:5000/viewProfile/getProfileData/${params.userFbUid}`)
   },
   {
-    path:'/inventoryDetail',
-    element:<InventoryDetail></InventoryDetail>
+    path:'/inventoryDetail/:userFbUid',
+    element:<InventoryDetail></InventoryDetail>,
+    loader:({params})=>fetch(`http://localhost:5000/inventoryDetail/${params.userFbUid}`)
     
-  }
+  },
+  {
+    path:'/viewDetail/:id',
+    element:<ViewDetail></ViewDetail>,
+    loader:({params})=>fetch(`http://localhost:5000/shop/viewProduct/${params.id}`)
+  },
  
 ]);
 

@@ -21,8 +21,9 @@ const EditPost = () => {
     let name = form.name.value;
     let price = form.price.value;
     let stock = form.stock.value;
+    let shipping = form.shipping.value;
 
-    productDetail = { aboutProduct, category, img, name, price, stock };
+    productDetail = { aboutProduct, category, img, name, price, stock, shipping };
   }
 
   function viewProductUpdatedDetail(event) {
@@ -102,6 +103,15 @@ const EditPost = () => {
             type="text"
             placeholder="Aveable Quantity"
             defaultValue={loader.stock}
+            className="input input-bordered input-primary w-full max-w-xs hover:border-blue-500"
+            required
+          />
+          <input
+            onChange={gatherUpdatedProductDetail}
+            name="shipping"
+            type="text"
+            placeholder="Shipping Cost"
+            defaultValue={loader.shipping}
             className="input input-bordered input-primary w-full max-w-xs hover:border-blue-500"
             required
           />

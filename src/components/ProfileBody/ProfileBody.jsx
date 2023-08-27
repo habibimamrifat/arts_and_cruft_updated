@@ -5,7 +5,7 @@ import ProfileMiddleBody from './ProfileMiddleBody';
 
 const ProfileBody = () => {
   return (
-    <div className="grid grid-cols-12 fixed top-44 overflow-hidden w-full">
+    <div className="grid grid-cols-12 fixed top-44 overflow-hidden w-full mx-auto">
       <div className="h-96 border-2 border-blue-500 col-span-3  ">
         <ProfileLeftSide></ProfileLeftSide>
       </div>

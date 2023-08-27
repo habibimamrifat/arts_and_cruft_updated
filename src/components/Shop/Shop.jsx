@@ -7,10 +7,10 @@ import {  clearCartFromDb, getStored_Cart, store_in_db } from '../../utilities/f
 const Shop = () => {
     // responsible for loading data 
     const [products , setProducts] = useState([])
-    let [cart, setCart] = useState([]) 
+    let [cart, setCart] = useState([])
 
     useEffect(()=>{
-        fetch('products.json')
+        fetch('http://localhost:5000/shop/fetchFromShopCollection')
         .then(res => res.json())
         .then(data => setProducts(data))
     },[]);
@@ -34,6 +34,8 @@ const Shop = () => {
        }
 
     },[products]);
+
+    // console.log(cart);
 
 
     const addToCart = (product) =>
@@ -63,13 +65,11 @@ const Shop = () => {
     }
 
 
-    
-
 
     return (
-        <div className='shop absolute top-12 overflow-hidden '>
+        <div className='shop fixed top-12 overflow-hidden '>
            
-            <div className='grid grid-cols-4 gap-2 w-[100%] h-screen relative top-2 overflow-scroll ml-3'>
+            <div className='grid grid-cols-3 gap-2 w-[100%] h-screen relative top-2 overflow-scroll ml-3 pb-80'>
                {
                 products.map( product => 
                 <Product
@@ -80,7 +80,7 @@ const Shop = () => {
                }
             </div>
             
-            <div className='h-96 sticky top-20 rounded-lg text-white'>
+            <div className='fixed right-0 top-20 rounded-lg text-white'>
                 {
                     
                 <Cart

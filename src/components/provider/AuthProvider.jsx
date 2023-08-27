@@ -11,16 +11,22 @@ const auth = getAuth(app)
 
 const AuthProvider = ({children}) => {
 
-    const [customer, setCustomer]=useState({customerName:'', customerMobileNumber:'',customerAddress:'',GrandTotal:'',customerCart:[]})
+    // const [customer, setCustomer]=useState({customerName:'', customerMobileNumber:'',customerAddress:'',GrandTotal:'',customerCart:[]})
+
     const [aboutUser, setAboutUser]=useState({});
 
-    const [customerPermission , setCustomerPermission] =useState(false);
-    const [finalCart,setFinalCart]= useState([])
-    const [finalGrandTotal,setFinalGrandTotal]= useState(0);
+    // const [customerPermission , setCustomerPermission] =useState(false);
+    // const [finalCart,setFinalCart]= useState([])
+
+    // const [finalGrandTotal,setFinalGrandTotal]= useState(0);
+
     const [reload,setReload]=useState(false);
 
     const [user, setUser] = useState(null);
     const [loading,setLoading] = useState(true)
+
+
+    
 
     const signUpUsers =(email,password)=>{
         setLoading(true)
@@ -40,9 +46,10 @@ const AuthProvider = ({children}) => {
 
     function changePasswordFromSettings(newPassword)
     {
+        console.log(newPassword);
        console.log(auth.currentUser);
-       console.log(user);
-       return updatePassword(user,newPassword)
+       
+       return updatePassword( user , newPassword)
    
     }
 
@@ -78,14 +85,14 @@ const AuthProvider = ({children}) => {
         aboutUser,
         setAboutUser,
         loading,
-        customer,
-        customerPermission,
-        finalCart,
-        setFinalCart,
-        finalGrandTotal,
-        setFinalGrandTotal,
-        setCustomerPermission,
-        setCustomer,
+        // customer,
+        // customerPermission,
+        // finalCart,
+        // setFinalCart,
+        // finalGrandTotal,
+        // setFinalGrandTotal,
+        // setCustomerPermission,
+        // setCustomer,
         signUpUsers,
         logInUsers,
         logOutUser,

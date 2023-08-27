@@ -2,7 +2,7 @@ import { getStored_Cart } from "../../utilities/fakedbTry";
 
 const LoadDataFromDb = async ()=>{
 
-    const dataFromAll = await fetch('products.json');
+    const dataFromAll = await fetch('http://localhost:5000/shop/fetchFromShopCollection');
     const productsFromAll = await dataFromAll.json();
    
     let addedInCart = [];

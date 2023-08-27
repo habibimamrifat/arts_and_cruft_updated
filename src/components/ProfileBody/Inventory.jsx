@@ -7,26 +7,17 @@ import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 
 
 const Inventory = () => {
-<<<<<<< HEAD
   let totalProduct = 0;
   let totalItemPrice = 0;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   let [allPost, setAllPost] = useState([]);
   const [summary, setSummary] = useState({})
   const [clickedItemId, setClickedItemId] = useState(null);
-=======
-    
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    let [allPost, setAllPost] = useState([]);
-    const [summary, setSummary]=useState({})
-    const [clickedItemId, setClickedItemId] = useState(null);
->>>>>>> 1abba2b47fc1873bbe957d43facce093b0cf3c6d
 
   const { aboutUser } = useContext(AuthContext);
 
 
 
-<<<<<<< HEAD
   // http://localhost:5000/profile/inventory/${params.userFbUid
 
   function fetchData() {
@@ -79,7 +70,7 @@ const Inventory = () => {
   function deleteFromPosts(itemId) {
     console.log("calling from delete");
     console.log(itemId);
-    fetch(`http://localhost:5000/post/deleteFromPost/${itemId}`, {
+    fetch(`http://localhost:5000/inventory/deleteFromInventory/${itemId}`, {
       method: "delete",
     })
       .then((res) => res.json())
@@ -100,82 +91,6 @@ const Inventory = () => {
 
     setIsMenuOpen(false);
   }
-=======
-    function fetchData() {
-        if (aboutUser && aboutUser.userFbUid) {
-          const userFbUid = aboutUser.userFbUid;
-    
-          fetch(`http://localhost:5000/profile/inventory/${userFbUid}`)
-            .then((res) => res.json())
-            .then((data) => {
-              //   console.log(data);
-              setAllPost(data);
-              //   console.log(allPost);
-              
-            });
-        }
-      }
-      // console.log(allPost);
-    
-
-   
-      useEffect(() => {
-        let totalProduct =0;
-        let totalItemPrice =0;
-        allPost.map((post)=>{
-          totalProduct =totalProduct + parseInt(post.stock) ;
-          totalItemPrice= totalItemPrice + (parseInt(post.stock)  * parseInt(post.price) )
-        })
-        let summaryProvider={totalProduct, totalItemPrice}
-        // console.log(summaryProvider);
-        setSummary(summaryProvider);
-       
-      }, [allPost]);
-    
-      useEffect(() => {
-        fetchData();
-       
-      }, [aboutUser]);
-
-
-    function toggleMenu(itemId) {
-        if (clickedItemId === itemId) {
-          setIsMenuOpen(!isMenuOpen); // Toggle the menu state
-        } else {
-          setIsMenuOpen(true);
-          setClickedItemId(itemId);
-        }
-      }
-    
-    
-    
-      function deleteFromPosts(itemId) {
-        console.log("calling from delete");
-        console.log(itemId);
-        fetch(`http://localhost:5000/inventory/deleteFromInventory/${itemId}`, {
-          method: "delete",
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            console.log(data);
-            if (data.deletedCount > 0) {
-              alert("the post has been deleted");
-              const updatedPosts = allPost.filter(post=>post.id !== itemId)
-              setAllPost(updatedPosts);
-      
-            }
-           
-          });
-          setIsMenuOpen(false);
-      }
-      function closeDropdown() {
-       
-        setIsMenuOpen(false);
-      }
-
-    
- 
->>>>>>> 1abba2b47fc1873bbe957d43facce093b0cf3c6d
 
 
 
@@ -218,27 +133,15 @@ const Inventory = () => {
                 <div>
                   {isMenuOpen && clickedItemId === post.id && (
                     <div className="flex flex-col relative  rounded-md bg-slate-600">
-<<<<<<< HEAD
 
 
                       <button className="px-5 m-1 hover:bg-slate-100 rounded-xl">
-                        <Link to={`/profile/editPost/${post.id}`}>
+                        <Link to={`/profile/editInventory/${post.id}`}>
                           EditPost
                         </Link>
                       </button>
 
 
-=======
-                      
-  
-                     <button className="px-5 m-1 hover:bg-slate-100 rounded-xl">
-                     <Link to={`/profile/editInventory/${post.id}`}>
-                     EditPost
-                     </Link>
-                     </button>
-                    
-  
->>>>>>> 1abba2b47fc1873bbe957d43facce093b0cf3c6d
                       <button
                         onClick={() => deleteFromPosts(post.id)}
                         className="px-5 m-1 hover:bg-slate-100 rounded-xl text-red-400"
@@ -265,24 +168,14 @@ const Inventory = () => {
                     alt="img not found"
                   />
                 </div>
-<<<<<<< HEAD
 
                 <div className=" p-2 px-4 ">
                   <p>Price:{post.price && post.price} TK</p>
+                  <p>In Stock:{post.stock}</p>
                   <h2 className="p-1">Name:{post.name && post.name.toUpperCase()}</h2>
                   <p >Seller:{post.seller && post.seller.toUpperCase()}</p>
 
                   <p className="h-16 pt-1 overflow-auto">About Product:{post.aboutProduct}</p>
-=======
-  
-                <div className="h-28 p-2 px-4">
-                <p>{post.price && post.price} TK</p>
-                <h2 className="p-1">{post.name && post.name.toUpperCase()}</h2>
-                  <p>Seller : {post.seller && post.seller.toUpperCase()}</p>
-                  <p>Max Quantity:{post.stock && post.stock} </p>
-                  
-                  <p>Detail:{post.aboutProduct}</p>
->>>>>>> 1abba2b47fc1873bbe957d43facce093b0cf3c6d
                 </div>
               </div>
             ))}
@@ -298,25 +191,20 @@ const Inventory = () => {
           <h1>Total Item: {summary.totalProduct}</h1>
           <h1>Total Price: {summary.totalItemPrice}</h1>
 
-          <Link to="/inventoryDetail">
+          {/* <Link to="/inventoryDetail">
+          <button className="btn mt-5 hover:bg-slate-600">
+            View Detail
+            </button>
+          </Link> */}
+
+          <Link to={`/inventoryDetail/${aboutUser.userFbUid}`}>
+
           <button className="btn mt-5 hover:bg-slate-600">
             View Detail
             </button>
           </Link>
           
 
-<<<<<<< HEAD
-=======
-            <div className="col-span-3 bg-slate-800 rounded-2xl m-2">
-                <div className="text-center mt-5">
-                    <h1 className="text-2xl font-bold">Inventory Summary</h1>
-                    <small>On Sell</small>
-                    <h1>Total Item: {summary.totalProduct}</h1>
-                    <h1>Total Price: {summary.totalItemPrice} TK</h1>
-                    
-                </div>
-            </div>
->>>>>>> 1abba2b47fc1873bbe957d43facce093b0cf3c6d
         </div>
       </div>
     </div>

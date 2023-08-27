@@ -86,7 +86,7 @@ const Viewprofile = () => {
      
 
       <div>
-      <div className="absolute mt-44 w-[50%] h-screen overflow-hidden mx-[25%] ">
+      <div className="fixed mt-44 w-[50%] h-screen overflow-hidden mx-[25%] ">
       <div className="relative mt-0 w-[100%] h-screen flex items-center justify-center">
         <div className="h-screen relative top-2 overflow-y-scroll  w-full pb-[40%] ">
           {allPost.map((post) => (

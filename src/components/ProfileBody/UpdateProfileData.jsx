@@ -7,10 +7,20 @@ const UpdateProfileData = () => {
 
   let paymentMethod, userHobby;
   const navigate = useNavigate();
-  const {aboutUser,setReload}=useContext(AuthContext);
-  const userFbUid=aboutUser.userFbUid;
+  const { aboutUser, setReload } = useContext(AuthContext);
+  let userFbUid = aboutUser.userFbUid;
 
-  let updatedUserData = {userImg:'',Name:'', MobileNo:'', Address:'',Institution:'', City:'', PaymentNumber:'', Hobby:'',PaymentMethod:'', personalEmail:'',}
+  if (!aboutUser) {
+    const loggedinUserUidString = localStorage.getItem('loggedInUserUid');
+    if (loggedinUserUidString) {
+      const loggedinUserUid = JSON.parse(loggedinUserUidString);
+      console.log(loggedinUserUid.Uid);
+      userFbUid = loggedinUserUid.Uid;
+    }
+
+  }
+
+  let updatedUserData = { userImg: '', Name: '', MobileNo: '', Address: '', Institution: '', City: '', PaymentNumber: '', Hobby: '', PaymentMethod: '', personalEmail: '', }
 
 
   function handleUpdatedUserData(event) {
@@ -19,41 +29,40 @@ const UpdateProfileData = () => {
     let value = event.target.value;
     let name = event.target.name;
     console.log(name, value);
-    updatedUserData[name]=value;
+    updatedUserData[name] = value;
     console.log(updatedUserData);
   }
-  
 
- function handleUpdateUser (event)
- {
-  event.preventDefault();
-  console.log(updatedUserData);
-  fetch(`http://localhost:5000/user/updateUser/${userFbUid}`,{
-    method:'put',
-    headers:{
-      'content-type':'application/json'
-    },
-    body:JSON.stringify(updatedUserData)
-  })
-  .then((res)=>res.json())
-  .then(data=>{
-    console.log(data)
-    alert('your profile has been updated');
-    navigate('/profile');
-    setReload(true);
-  })
- }
-  
+
+  function handleUpdateUser(event) {
+    event.preventDefault();
+    console.log(updatedUserData);
+    fetch(`http://localhost:5000/user/updateUser/${userFbUid}`, {
+      method: 'put',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(updatedUserData)
+    })
+      .then((res) => res.json())
+      .then(data => {
+        console.log(data)
+        alert('your profile has been updated');
+        navigate('/profile');
+        setReload(true);
+      })
+  }
+
 
   return (
     <div className="flex flex-col justify-center mt-36 pb-10">
-    
-    <form onSubmit={handleUpdateUser} className="mt-16">
+
+      <form onSubmit={handleUpdateUser} className="mt-16">
         <h1 className="text-4xl mb-5 text-center">Update User</h1>
 
         <div className="flex justify-around">
           <div>
-          <div>
+            <div>
               <input
                 className="input p-5 input-bordered input-primary w-[90%] max-w-xs m-2 hover:border-2 hover:border-blue-500"
                 type="text"
@@ -64,11 +73,11 @@ const UpdateProfileData = () => {
               />
             </div>
             <small>
-            provide img url..To convirt your img into url use{" "}
-            <Link target="blank" className="underline" to="https://imgbb.com/">
-              imegebb
-            </Link>
-          </small>
+              provide img url..To convirt your img into url use{" "}
+              <Link target="blank" className="underline" to="https://imgbb.com/">
+                imegebb
+              </Link>
+            </small>
             <div>
               <input
                 className="input p-5 input-bordered input-primary w-[90%] max-w-xs m-2 hover:border-2 hover:border-blue-500"

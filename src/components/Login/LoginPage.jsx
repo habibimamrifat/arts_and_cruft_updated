@@ -6,14 +6,14 @@ import { AuthContext } from "../provider/AuthProvider";
 
 const LoginPage = () => {
 
-  
-  const [error,setError] = useState('');
 
-  const { logInUsers, handleResetPassword, popupGoogleSignIn,setUser } = useContext(AuthContext);
+  const [error, setError] = useState('');
+
+  const { logInUsers, handleResetPassword, popupGoogleSignIn, setUser } = useContext(AuthContext);
   const nevigate = useNavigate();
 
   const location = useLocation();
- 
+
 
   const from = location.state?.from?.pathname || "/profile";
 
@@ -23,7 +23,7 @@ const LoginPage = () => {
   } else {
     rendaring = false;
   }
-  
+
 
   const handleLOgIn = (event) => {
     event.preventDefault();
@@ -36,8 +36,28 @@ const LoginPage = () => {
       .then((result) => {
         const loggedUser = result.user;
         const loggerUserUid = loggedUser.uid;
+        console.log(loggerUserUid);
+
+
+        
+
+        const loggedinUserUidString = localStorage.getItem('artAndCraftloggedInUserUid');
+        if (loggedinUserUidString) {
+          const loggedinUserUid = JSON.parse(loggedinUserUidString);
+          console.log(loggedinUserUid.Uid); 
+        }
+        else {
+          const loggedinUserUid = { Uid: loggerUserUid };
+          const loggedinUserUidString = JSON.stringify(loggedinUserUid);
+          localStorage.setItem('artAndCraftloggedInUserUid', loggedinUserUidString);
+
+        }
+
+
+
+
         setUser(loggedUser);
-      
+
         form.reset();
         // will be changed with profileLink
         nevigate(from);
@@ -46,7 +66,7 @@ const LoginPage = () => {
         setError(error);
       });
 
-   
+
   };
 
   function handlePassword(event) {
@@ -55,27 +75,26 @@ const LoginPage = () => {
 
 
     handleResetPassword(resetpass)
-    .then(result =>{
-      alert('Reset password Email Has been sent')
-    })
-    .catch(error=>{
-      setError(error)
-    })
-    
+      .then(result => {
+        alert('Reset password Email Has been sent')
+      })
+      .catch(error => {
+        setError(error)
+      })
+
   }
 
 
-  function googleSignIn()
-  {
+  function googleSignIn() {
     popupGoogleSignIn()
-    .then(result=>{
-      alert('account is ready')
-      console.log(result.user);
-      nevigate(from);
-    })
-    .catch(error=>{
-      setError(error);
-    })
+      .then(result => {
+        alert('account is ready')
+        console.log(result.user);
+        nevigate(from);
+      })
+      .catch(error => {
+        setError(error);
+      })
   }
 
 
@@ -86,8 +105,9 @@ const LoginPage = () => {
       <form onSubmit={handleLOgIn} className="mt-16">
         <div className="flex flex-col justify-center items-center">
           {(rendaring && <h1 className="text-4xl mb-5">Log In</h1>) || (
+
             <h1 className="text-4xl mb-5">
-              log in with your Account <br />or<br/> Fillup <span><Link to="customerform"><small>Customerform</small></Link></span>{" "}
+              log in with your Account <br />or<br /> Fillup <span><Link to="customerform"><small className="text-xs underline">Customerform</small></Link></span>
             </h1>
           )}
 
@@ -110,7 +130,7 @@ const LoginPage = () => {
           />
         </div>
 
-      
+
 
         <div className="flex justify-center items-center mt-5">
           <button

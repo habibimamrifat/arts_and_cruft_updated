@@ -55,7 +55,7 @@ async function run() {
     app.put("/user/updateUser/:userFbUid", async (req, res) => {
       const userFbUid = req.params.userFbUid;
       const updatedUserData = req.body;
-      console.log(userFbUid,updatedUserData);
+      console.log(userFbUid, updatedUserData);
 
       const filter = { userFbUid: userFbUid };
       const option = { upsert: true };
@@ -171,18 +171,17 @@ async function run() {
     app.get("/post/checkBeforePutOnSell/:itemId", async (req, res) => {
       const itemId = req.params.itemId;
       console.log(itemId);
-      const query = { id : itemId };
+      const query = { id: itemId };
       let result = await shopCollection.findOne(query);
-      if (result === null)
-      {
-        const permission = {permission:'False'}
+      if (result === null) {
+        const permission = { permission: 'False' }
         result = permission;
         res.send(result);
-       
+
       }
-      else{
+      else {
         console.log(result);
-      res.send(result);
+        res.send(result);
       }
     });
 
@@ -191,13 +190,13 @@ async function run() {
     app.get("/post/putOnSell/:itemId", async (req, res) => {
       const itemId = req.params.itemId;
       console.log(itemId);
-      const query = { id : itemId };
+      const query = { id: itemId };
       const result = await postCollection.findOne(query);
       res.send(result);
     });
 
     app.post("/post/putOnSell/storeInDatabase", async (req, res) => {
-      
+
       const createPost = req.body;
       console.log("create a sell");
       console.log(createPost);
@@ -206,19 +205,19 @@ async function run() {
       res.send(result);
     });
 
-    app.delete('/post/deleteFromPost/:itemId', async(req,res)=>{
+    app.delete('/post/deleteFromPost/:itemId', async (req, res) => {
       const itemId = req.params.itemId;
       console.log(itemId);
-      const query = { id : itemId };
+      const query = { id: itemId };
       let result = await postCollection.deleteOne(query);
       res.send(result)
 
     })
 
-    app.get('/post/getEditPost/:itemId', async(req,res)=>{
+    app.get('/post/getEditPost/:itemId', async (req, res) => {
       const itemId = req.params.itemId;
       console.log(itemId);
-      const query = { id : itemId };
+      const query = { id: itemId };
       let result = await postCollection.findOne(query);
       res.send(result)
 
@@ -227,7 +226,7 @@ async function run() {
     app.put("/post/updatePost/:id", async (req, res) => {
       const id = req.params.id;
       const updatedPostData = req.body;
-      console.log(id,updatedPostData);
+      console.log(id, updatedPostData);
 
       const filter = { id: id };
       const option = { upsert: true };
@@ -238,82 +237,150 @@ async function run() {
           name: updatedPostData.name,
           price: updatedPostData.price,
           stock: updatedPostData.stock,
-          
+          shipping: updatedPostData.shipping,
+
         },
       };
       const result = await postCollection.updateOne(filter, updatePost, option);
       res.send(result);
     });
 
-// ..........................view profile.............................. 
-app.get(`/viewProfile/getProfileData/:userFbUid`,async(req,res)=>{
-  const uid = req.params.userFbUid;
-  const query = { userFbUid: uid };
-  const result = await userCollection.findOne(query);
-  res.send(result);
+    // ..........................view profile.............................. 
+    app.get(`/viewProfile/getProfileData/:userFbUid`, async (req, res) => {
+      const uid = req.params.userFbUid;
+      const query = { userFbUid: uid };
+      const result = await userCollection.findOne(query);
+      res.send(result);
 
-})
-
-
+    })
 
 
 
 
-// ............................profile right Side  Inventory..................................
-app.get(`/profile/inventory/:userFbUid`,async(req,res)=>{
-  const uid = req.params.userFbUid;
-  const query = { userFbUid: uid };
-  const result = await shopCollection.find(query).toArray();
-  res.send(result);
-})
-
-app.get(`/inventoryDetail/:userFbUid`,async(req,res)=>{
-  const uid = req.params.userFbUid;
-  const query = { userFbUid: uid };
-  const result = await shopCollection.find(query).toArray();
-  res.send(result);
-})
 
 
-app.delete('/inventory/deleteFromInventory/:itemId', async(req,res)=>{
-  const itemId = req.params.itemId;
-  console.log(itemId);
-  const query = { id : itemId };
-  let result = await shopCollection.deleteOne(query);
-  res.send(result)
+    // ............................profile right Side  Inventory..................................
+    app.get(`/profile/inventory/:userFbUid`, async (req, res) => {
+      const uid = req.params.userFbUid;
+      const query = { userFbUid: uid };
+      const result = await shopCollection.find(query).toArray();
+      res.send(result);
+    })
 
-})
+    app.get(`/inventoryDetail/:userFbUid`, async (req, res) => {
+      const uid = req.params.userFbUid;
+      const query = { userFbUid: uid };
+      const result = await shopCollection.find(query).toArray();
+      res.send(result);
+    })
 
-app.get('/inventory/getEditInventory/:itemId', async(req,res)=>{
-  const itemId = req.params.itemId;
-  console.log(itemId);
-  const query = { id : itemId };
-  let result = await shopCollection.findOne(query);
-  res.send(result)
 
-})
+    app.delete('/inventory/deleteFromInventory/:itemId', async (req, res) => {
+      const itemId = req.params.itemId;
+      console.log(itemId);
+      const query = { id: itemId };
+      let result = await shopCollection.deleteOne(query);
+      res.send(result)
 
-app.put("/inventory/updateInventory/:id", async (req, res) => {
-  const id = req.params.id;
-  const updatedPostData = req.body;
-  console.log(id,updatedPostData);
+    })
 
-  const filter = { id: id };
-  const option = { upsert: true };
-  const updatePost = {
-    $set: {
-      img: updatedPostData.img,
-      category: updatedPostData.category,
-      name: updatedPostData.name,
-      price: updatedPostData.price,
-      stock: updatedPostData.stock,
-      
-    },
-  };
-  const result = await shopCollection.updateOne(filter, updatePost, option);
-  res.send(result);
-});
+    app.get('/inventory/getEditInventory/:itemId', async (req, res) => {
+      const itemId = req.params.itemId;
+      console.log(itemId);
+      const query = { id: itemId };
+      let result = await shopCollection.findOne(query);
+      res.send(result)
 
+    })
+
+    app.put("/inventory/updateInventory/:id", async (req, res) => {
+      const id = req.params.id;
+      const updatedPostData = req.body;
+      console.log(id, updatedPostData);
+
+      const filter = { id: id };
+      const option = { upsert: true };
+      const updatePost = {
+        $set: {
+          img: updatedPostData.img,
+          category: updatedPostData.category,
+          name: updatedPostData.name,
+          price: updatedPostData.price,
+          stock: updatedPostData.stock,
+          shipping: updatedPostData.shipping,
+
+        },
+      };
+      const result = await shopCollection.updateOne(filter, updatePost, option);
+      res.send(result);
+    });
+
+
+    // .................................shop setting ......................................
+
+    app.get("/shop/fetchFromShopCollection", async (req, res) => {
+      const allProductInShop = await shopCollection.find().toArray();
+      console.log(allProductInShop);
+      res.send(allProductInShop);
+    })
+
+    app.get("/shop/viewProduct/:id", async (req, res) => {
+
+      const itemId = req.params.id;
+      console.log(itemId);
+      const query = { id: itemId };
+      let result = await shopCollection.findOne(query);
+      res.send(result)
+
+    })
+
+    // ...................customer sign up...................
+    const customerCollection = artAndCraftDatabase.collection("customerCollection")
+
+    app.post("/customer/signUp", async (req, res) => {
+      const customerData = req.body;
+      const result = await customerCollection.insertOne(customerData);
+      res.send(result);
+    })
+
+    app.get('/payment/customerSearch/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) }
+      const result = await customerCollection.findOne(query)
+      res.send(result);
+    })
+
+    app.get('/payment/userSearch/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { userFbUid: id }
+      const result = await userCollection.findOne(query)
+      res.send(result);
+    })
+    // ...................................confirm purchase section...............
+    app.get('/confirmPurcase/getPurchaseItem/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { id: id }
+      const result = await shopCollection.findOne(query);
+      res.send(result);
+    })
+
+    app.put('/confirmPurcase/updateInventoryItem/:id', async (req, res) => {
+      const id = req.params.id;
+
+      const updatedUserData = req.body;
+      console.log(id, updatedUserData);
+
+      const filter = { id: id };
+      const option = { upsert: true };
+
+      const updateShop = {
+        $set: {
+          stock : updatedUserData.remainingInStock
+        },
+      };
+      let resultShop = await shopCollection.updateOne(filter, updateShop, option);
+      res.send(resultShop);
+    })
 
 
 

@@ -3,7 +3,7 @@ import { AuthContext } from "../provider/AuthProvider";
 import { Link, useNavigate } from "react-router-dom";
 
 const CreateAPost = () => {
-  "https://i.ibb.co/cYLCtBd/cre.png";
+  // "https://i.ibb.co/cYLCtBd/cre.png";
   let category;
   let productDetail = {
     userFbUid: null,
@@ -11,13 +11,14 @@ const CreateAPost = () => {
     id: null,
     seller: null,
     img: null,
-    price: null,
+    price: 0,
     name: null,
     aboutProduct: null,
     quantity: 0,
     totalPrice:0,
+    shipping:0,
     category: null,
-    stock: null,
+    stock: 0,
     option: null,
     paymentMethod:null,
     paymentNumber:null
@@ -40,6 +41,10 @@ const CreateAPost = () => {
     event.preventDefault();
     let name = event.target.name;
     let value = event.target.value;
+
+    if (name === "stock" || name === "price" || name === "shipping") {
+      value = parseFloat(value); // Use parseFloat to handle decimal numbers
+    }
 
     productDetail[name] = value;
   }
@@ -213,6 +218,14 @@ const CreateAPost = () => {
             name="stock"
             type="text"
             placeholder="Aveable Quantity"
+            className="input input-bordered input-primary w-full max-w-xs hover:border-blue-500"
+            required
+          />
+          <input
+            onChange={gatherProductDetail}
+            name="shipping"
+            type="text"
+            placeholder="Shipping Cost"
             className="input input-bordered input-primary w-full max-w-xs hover:border-blue-500"
             required
           />
